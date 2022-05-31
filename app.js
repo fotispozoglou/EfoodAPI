@@ -1,4 +1,11 @@
-require('dotenv').config();
+if ( process.env.NODE_ENV !== "production" ) {
+
+  require('dotenv').config();
+
+}
+
+const port = process.env.PORT;
+
 const express = require('express');
 const app = express();
 const cors = require('cors');
@@ -7,7 +14,7 @@ const { SERVER_IP } = require('./config/config.js');
 
 const mongoSanitize = require('express-mongo-sanitize');
 
-const dbUrl = process.env.DB_URL; // 'mongodb://localhost:27017/efood-api';
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/efood-api';
 
 mongoose.connect(dbUrl, {
   useUnifiedTopology: true,
@@ -27,7 +34,7 @@ const ordersRoutes = require('./routes/orders.js');
 const adminOrdersRoutes = require('./routes/adminOrders.js');
 
 const corsOptions = {
-  origin: [`http://${ SERVER_IP }:8080`, `http://${ SERVER_IP }:8000`],
+  origin: [`https://efood-admin.herokuapp.com`],
   optionsSuccessStatus: 200 
 }
 
@@ -48,7 +55,7 @@ app.use('/ingredients', ingredientsRoutes);
 app.use('/productsCategories', productsCategoriesRoutes);
 app.use('/tiers', tiersRoutes);
 
-app.listen(3000, () => {
+app.listen(port, () => {
 
   console.log("API STARTED");
 
