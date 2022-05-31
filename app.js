@@ -34,7 +34,7 @@ const ordersRoutes = require('./routes/orders.js');
 const adminOrdersRoutes = require('./routes/adminOrders.js');
 
 const corsOptions = {
-  origin: [`https://efood-admin.herokuapp.com`],
+  origin: [`https://efood-admin.herokuapp.com`, 'https://client-efood.herokuapp.com'],
   optionsSuccessStatus: 200 
 }
 
