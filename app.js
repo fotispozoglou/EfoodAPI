@@ -4,7 +4,7 @@ if ( process.env.NODE_ENV !== "production" ) {
 
 }
 
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 
 const express = require('express');
 const app = express();
@@ -34,10 +34,9 @@ const ordersRoutes = require('./routes/orders.js');
 const adminOrdersRoutes = require('./routes/adminOrders.js');
 
 const corsOptions = {
-  origin: [`https://efood-admin.herokuapp.com`, 'https://client-efood.herokuapp.com'],
+  origin: [`http://${ SERVER_IP }:8080`, `http://${ SERVER_IP }:8000`],
   optionsSuccessStatus: 200 
 }
-
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors( corsOptions ));
