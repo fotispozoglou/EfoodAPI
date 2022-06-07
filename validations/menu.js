@@ -43,7 +43,6 @@ module.exports.validateProduct = async ( req, res, next ) => {
       .min( 0, 'Price Value Must Be Greater Than Or Equal To 0' );
 
     const isValidAvailable = new Validate( available )
-      .required('You Need To Specify If Product Is Available')
       .enum( [ true, false ], "You Need To Specify If Product Is Available" );
 
     const isValidQuantity = new Validate( quantity )

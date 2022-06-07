@@ -131,39 +131,6 @@ module.exports.getDeliveryOrder = async ( req, res ) => {
 
 };
 
-const getOrdersAnalytics = async () => {
-
-  const todayTime = new Date();
-
-  todayTime.setHours( 0, 0, 0, 0 );
-
-  const todayOrdersCount = await Order.find({ 'time.sendAt': { $gt: todayTime.getTime() } }).count();
-
-  const totalOrdersCount = await Order.count({});
-
-  const totalOrdersPrices = await Order.aggregate(
-    [
-      { $match: {  } },
-      { $group: { _id: null, total: { $sum: "$totalPrice" } } }
-    ]
-  );
-
-  const todayOrdersPrices = await Order.aggregate(
-    [
-      { $match: { 'time.sendAt': { $gt: todayTime.getTime() } } },
-      { $group: { _id: null, total: { $sum: "$totalPrice" } } }
-    ]
-  );
-    
-  return { 
-    todayOrdersCount, 
-    totalOrdersCount, 
-    totalOrdersPrices: totalOrdersPrices.length > 0 ? totalOrdersPrices[0].total : 0, 
-    todayOrdersPrices: todayOrdersPrices.length > 0 ? todayOrdersPrices[0].total : 0
-  };
-
-};
-
 module.exports.getCompletedOrders = async ( req, res ) => {
 
   const { page, ict } = req.query;
@@ -174,8 +141,6 @@ module.exports.getCompletedOrders = async ( req, res ) => {
 
   const time = Date.now();
 
-  const analytics = await getOrdersAnalytics();
-
-  res.send(JSON.stringify({ orders, time, analytics }));
+  res.send(JSON.stringify({ orders, time }));
 
 };

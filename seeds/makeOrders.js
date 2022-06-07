@@ -35,6 +35,8 @@ const loadProducts = async () => {
 
 };
 
+const SEVEN_DAYS = 7 * 60 * 60 * 24 * 1000;
+
 const createOrder = async () => {
 
   const randomClient = clients[ Math.floor( Math.random() * clients.length ) ];
@@ -47,6 +49,10 @@ const createOrder = async () => {
 
   const { products: finalProducts, totalPrice } = await generateOrderProducts( randomProducts );
 
+  const randomSendAT = new Date().getTime() - Math.floor( Math.random() * SEVEN_DAYS );
+
+  console.log(`ORDER DATE: ${ new Date(randomSendAT).getDate() }:${ new Date(randomSendAT).getMonth() + 1 }:${ new Date(randomSendAT).getFullYear() }`);
+
   const order = new Order( 
     { 
       client: randomClient, 
@@ -55,7 +61,7 @@ const createOrder = async () => {
       status: randomClient.status,//ORDER.STATUS_COMPLETED,
       user: "621020d63dcc1a203b5563c3",
       time: {
-        sendAt: Date.now()
+        sendAt: randomSendAT
       },
       orderID: Math.floor( (Math.random() * 890000) + 100000  )
     } 
@@ -77,7 +83,7 @@ const startOrderInterval = () => {
 
     madeOrders.push( id );
 
-  }, Math.floor( (Math.random() * 2) + 5 ) * 1000);
+  }, Math.floor( (Math.random() * 2) + 8 ) * 1000);
 
 };
 
@@ -96,6 +102,8 @@ const init = async () => {
   await loadProducts();
 
   console.log("STARTING MAKING ORDERS");
+
+  // await Order.deleteMany({});
 
   startOrderInterval();
 

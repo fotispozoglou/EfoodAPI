@@ -14,7 +14,7 @@ const { SERVER_IP } = require('./config/config.js');
 
 const mongoSanitize = require('express-mongo-sanitize');
 
-const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/efood-api';
+const dbUrl = 'mongodb://localhost:27017/efood-api'; // process.env.DB_URL
 
 mongoose.connect(dbUrl, {
   useUnifiedTopology: true,
@@ -32,11 +32,13 @@ const productsCategoriesRoutes = require('./routes/productsCategories.js');
 const tiersRoutes = require('./routes/tiers.js');
 const ordersRoutes = require('./routes/orders.js');
 const adminOrdersRoutes = require('./routes/adminOrders.js');
+const analyticsRoutes = require('./routes/analytics.js');
 
 const corsOptions = {
-  origin: [`http://${ SERVER_IP }:8080`, `http://${ SERVER_IP }:8000`],
+  origin: [`http://${ SERVER_IP }:8080`, `http://${ SERVER_IP }:8000`, `http://${ SERVER_IP }`],
   optionsSuccessStatus: 200 
 }
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors( corsOptions ));
@@ -53,6 +55,7 @@ app.use('/products', productsRoutes);
 app.use('/ingredients', ingredientsRoutes);
 app.use('/productsCategories', productsCategoriesRoutes);
 app.use('/tiers', tiersRoutes);
+app.use('/analytics', analyticsRoutes);
 
 app.listen(port, () => {
 
