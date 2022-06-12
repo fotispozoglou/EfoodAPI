@@ -11,9 +11,9 @@ module.exports.setOrderStatus = async ( req, res ) => {
 
   const order = await Order.findById( id );
 
-  if ( !override && newStatus <= order.status && newStatus !== -100 ) {
+  if ( !override && newStatus <= order.status.number && newStatus !== -100 ) {
 
-    return res.send(JSON.stringify({ status: GENERAL.SUCCESS, statusChanged: false, actualStatus: order.status }));
+    return res.send(JSON.stringify({ status: GENERAL.SUCCESS, statusChanged: false, actualStatus: order.status.number }));
 
   }
 
@@ -59,7 +59,7 @@ module.exports.getLiveOrders = async ( req, res ) => {
   const { lct = 0 } = req.query;
 
   const orders = await Order
-    .find({ status: { $in: [ ORDER.STATUS_PENDING, ORDER.STATUS_DELIVERING, ORDER.STATUS_ACCEPTED, ORDER.STATUS_COMPLETED ] },'time.sendAt': { $gt: lct } })
+    .find({ 'status.number': { $in: [ ORDER.STATUS_PENDING, ORDER.STATUS_DELIVERING, ORDER.STATUS_ACCEPTED, ORDER.STATUS_COMPLETED ] },'status.lastUpdated': { $gt: lct } })
     .select('_id status');
 
   const time = Date.now();
@@ -135,9 +135,9 @@ module.exports.getCompletedOrders = async ( req, res ) => {
 
   const { page, ict } = req.query;
 
-  const skip = ( page - 1 ) * 4;
+  const skip = ( page - 1 ) * 25;
 
-  const orders = await Order.find({ status: ORDER.STATUS_COMPLETED, 'time.sendAt': { $gt: ict } }).skip( skip ).limit( 4 );
+  const orders = await Order.find({ 'status.number': ORDER.STATUS_COMPLETED, 'time.sendAt': { $gt: ict } }).skip( skip ).limit( 25 );
 
   const time = Date.now();
 

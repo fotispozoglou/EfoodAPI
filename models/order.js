@@ -43,8 +43,14 @@ const OrderSchema = new Schema({
     type: Number
   },
   status: {
-    type: Number,
-    enum: [ ORDER.STATUS_PENDING, ORDER.STATUS_ACCEPTED, ORDER.STATUS_DELIVERING, ORDER.STATUS_COMPLETED, ORDER.STATUS_CANCELED ]
+    number: {
+      type: Number,
+      enum: [ ORDER.STATUS_PENDING, ORDER.STATUS_ACCEPTED, ORDER.STATUS_DELIVERING, ORDER.STATUS_COMPLETED, ORDER.STATUS_CANCELED ]
+    },
+    lastUpdated: {
+      type: Number,
+      default: Date.now()
+    }
   }
 });
 
@@ -62,7 +68,9 @@ OrderSchema.methods.ownedBy = async function( userID ) {
 
 OrderSchema.methods.updateStatus = async function( newStatus ) {
 
-  this.status = newStatus;
+  this.status.number = newStatus;
+
+  this.status.lastUpdated = Date.now();
 
   await this.save();
 

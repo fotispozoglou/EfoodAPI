@@ -13,6 +13,8 @@ const getTimeString = time => {
 
 const categorizeOrders = orders => {
 
+  if ( orders.length <= 0 ) return [];
+
   const DELAY = 1 * 60 * 60 * 24 * 1000;
 
   const firstOrderTime = orders[0]._id;
@@ -55,7 +57,7 @@ module.exports.getAllOrdersAnalytics = async ( req, res ) => {
       [ 
           { "$group":  { 
             "_id": "$time.sendAt", 
-            "status" : { $first: '$status' },
+            "status" : { $first: '$status.number' },
             "count": { "$sum": 1 } } 
           },
           { "$match": { 

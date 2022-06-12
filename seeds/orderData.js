@@ -7,7 +7,9 @@ module.exports.clients = [
     floor: "2", 
     name: "fotis",
     phone: `69${ Math.floor( Math.random() * 89000000 + 10000000 ) }`,
-    status: ORDER.STATUS_ACCEPTED
+    status: {
+      number: ORDER.STATUS_ACCEPTED
+    }
   },
   { 
     address: "Argilos", 
@@ -15,7 +17,9 @@ module.exports.clients = [
     floor: "2", 
     name: "nikos",
     phone: `69${ Math.floor( Math.random() * 89000000 + 10000000 ) }`,
-    status: ORDER.STATUS_ACCEPTED 
+    status: {
+      number: ORDER.STATUS_ACCEPTED
+    }
   },
   { 
     address: "Plisioi", 
@@ -23,7 +27,9 @@ module.exports.clients = [
     floor: "1", 
     name: "petros",
     phone: `69${ Math.floor( Math.random() * 89000000 + 10000000 ) }`,
-    status: ORDER.STATUS_ACCEPTED 
+    status: {
+      number: ORDER.STATUS_ACCEPTED
+    }
   },
   { 
     address: "Kleitos", 
@@ -31,7 +37,9 @@ module.exports.clients = [
     floor: "2", 
     name: "eleni",
     phone: `69${ Math.floor( Math.random() * 89000000 + 10000000 ) }`,
-    status: ORDER.STATUS_DELIVERING 
+    status: {
+      number: ORDER.STATUS_DELIVERING
+    }
   },
   { 
     address: "Kozani", 
@@ -39,7 +47,9 @@ module.exports.clients = [
     floor: "2", 
     name: "maria",
     phone: `69${ Math.floor( Math.random() * 89000000 + 10000000 ) }`,
-    status: ORDER.STATUS_DELIVERING 
+    status: {
+      number: ORDER.STATUS_DELIVERING
+    }
   },
   { 
     address: "Zep", 
@@ -47,7 +57,9 @@ module.exports.clients = [
     floor: "1", 
     name: "kostantina",
     phone: `69${ Math.floor( Math.random() * 89000000 + 10000000 ) }`,
-    status: ORDER.STATUS_DELIVERING 
+    status: {
+      number: ORDER.STATUS_DELIVERING
+    }
   },
   { 
     address: "Batero", 
@@ -55,7 +67,9 @@ module.exports.clients = [
     floor: "2", 
     name: "giorgos",
     phone: `69${ Math.floor( Math.random() * 89000000 + 10000000 ) }`,
-    status: ORDER.STATUS_PENDING 
+    status: {
+      number: ORDER.STATUS_PENDING
+    }
   },
   { 
     address: "koila", 
@@ -63,7 +77,9 @@ module.exports.clients = [
     floor: "1", 
     name: "eirhnh",
     phone: `69${ Math.floor( Math.random() * 89000000 + 10000000 ) }`,
-    status: ORDER.STATUS_PENDING 
+    status: {
+      number: ORDER.STATUS_PENDING
+    }
   },
   { 
     address: "lefkopigi", 
@@ -71,7 +87,9 @@ module.exports.clients = [
     floor: "1", 
     name: "kostas",
     phone: `69${ Math.floor( Math.random() * 89000000 + 10000000 ) }`,
-    status: ORDER.STATUS_PENDING 
+    status: {
+      number: ORDER.STATUS_PENDING
+    }
   }
 ];
 

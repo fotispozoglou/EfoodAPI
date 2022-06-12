@@ -69,7 +69,7 @@ const createOrder = async () => {
 
   await order.save();
 
-  return { id: order._id, statusText: statuses.get(order.status) };
+  return { id: order._id, statusText: statuses.get(order.status.number) };
 
 };
 
@@ -103,7 +103,7 @@ const init = async () => {
 
   console.log("STARTING MAKING ORDERS");
 
-  // await Order.deleteMany({});
+  await Order.deleteMany({});
 
   startOrderInterval();
 
