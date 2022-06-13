@@ -54,6 +54,8 @@ const OrderSchema = new Schema({
   }
 });
 
+OrderSchema.index({ "orderID": "" })
+
 OrderSchema.pre('save', function( next ) {
 
   next();

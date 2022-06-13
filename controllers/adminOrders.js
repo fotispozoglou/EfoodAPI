@@ -131,6 +131,22 @@ module.exports.getDeliveryOrder = async ( req, res ) => {
 
 };
 
+module.exports.searchCompletedOrders = async ( req, res ) => {
+
+  const { value, excluded } = req.body;
+
+  const numberValue = Number(value);
+
+  const minRange = numberValue * ( 10 ** (6 - numberValue.toString().length) );
+
+  const maxRange = (numberValue + 1) * ( 10 ** (6 - ((numberValue + 1).toString().length )) );
+
+  const orders = await Order.find({ orderID: { $gte: minRange, $lte: maxRange }, _id: { $nin: excluded } });
+
+  res.send(JSON.stringify({ status: 1, orders }));
+
+};
+
 module.exports.getCompletedOrders = async ( req, res ) => {
 
   const { page, ict } = req.query;

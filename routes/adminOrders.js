@@ -7,6 +7,7 @@ const orders = require('../controllers/adminOrders.js');
 
 router.get('/live', isAdmin, orders.getLiveOrders);
 router.get('/completed', isAdmin, orders.getCompletedOrders);
+router.post('/completed/search', isAdmin, orders.searchCompletedOrders);
 
 router.post('/load/pending', isAdmin, orders.loadPendingOrders);
 router.post('/load/delivery', isAdmin, orders.loadDeliveryOrders);
