@@ -33,6 +33,7 @@ const tiersRoutes = require('./routes/tiers.js');
 const ordersRoutes = require('./routes/orders.js');
 const adminOrdersRoutes = require('./routes/adminOrders.js');
 const analyticsRoutes = require('./routes/analytics.js');
+const { GENERAL } = require('./config/statusCodes.js');
 
 const corsOptions = {
   origin: [`http://${ SERVER_IP }:8080`, `http://${ SERVER_IP }:8000`, `http://${ SERVER_IP }`],
@@ -56,6 +57,22 @@ app.use('/ingredients', ingredientsRoutes);
 app.use('/productsCategories', productsCategoriesRoutes);
 app.use('/tiers', tiersRoutes);
 app.use('/analytics', analyticsRoutes);
+
+app.all('*', ( req, res ) => {
+
+  res.status( 403 ).send();
+
+});
+
+app.use((err, req, res, next) => {
+  
+  const { statusCode = 500 } = err;
+
+  if (!err.message) err.message = 'Server Error';
+  
+  res.status( statusCode ).send(JSON.stringify({ status: GENERAL.ERROR }));
+
+});
 
 app.listen(port, () => {
 

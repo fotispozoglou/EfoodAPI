@@ -18,7 +18,7 @@ router.route('/all')
   .post(isAdmin, productsCategories.getAllProductsCategories);
 
 router.route('/add')
-  .put(validateProductsCategory, productsCategories.addProductsCategory);
+  .post(validateProductsCategory, productsCategories.addProductsCategory);
 
 router.route('/:id')
   .get(productsCategories.getProductsCategoryData)
