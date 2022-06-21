@@ -41,9 +41,14 @@ const formatOrderObject = order => {
 
   order.products = [ ...products ];
 
-  order.status = ORDER.STATUS_PENDING;
+  const date = Date.now();
 
-  order.time = { sendAt: Date.now() };
+  order.status = {
+    lastUpdated: date,
+    number: ORDER.STATUS_PENDING
+  };
+
+  order.time = { sendAt: date };
 
   order.orderID = Math.floor((Math.random() * 899999) + 100000);
 
@@ -88,7 +93,7 @@ module.exports.completeOrder = async ( req, res ) => {
   const newOrderResponse = await Order.findById( newOrder.id ).select('_id orderID totalPrice products status time')
     .populate({ path: 'products', populate: { path: 'original', select: 'name price' }, select: 'quantity' });
 
-  res.send(JSON.stringify({ status: 1, orderID: newOrder.id, order: newOrderResponse }));
+  res.send(JSON.stringify({ status: GENERAL.SUCCESS, orderID: newOrder.id, order: newOrderResponse }));
 
 };
 

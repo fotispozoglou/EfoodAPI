@@ -6,6 +6,14 @@ const { validateProduct } = require('../validations/menu.js');
 
 const { isAdmin } = require('../middlewares/general.js');
 
+function sendError( req, res, next ) {
+
+  return next();
+
+  res.status( 500 ).send();
+
+};
+
 router.route('/')
   .delete(isAdmin, products.deleteProducts);
 
@@ -30,6 +38,6 @@ router.route('/:id')
   .put(validateProduct, products.updateProduct);
 
 router.route('/:id/:populate')
-  .get(products.getProductData);
+  .get( sendError, products.getProductData);
 
 module.exports = router;

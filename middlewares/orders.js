@@ -35,7 +35,7 @@ const checkUserActiveOrder = async ( req, res, next ) => {
 
     const { _id } = user;
 
-    const clientPendingOrders = await Order.count({ user: _id, status: { $in: pendingOrdersStatus } });
+    const clientPendingOrders = await Order.count({ user: _id, 'status.number': { $in: pendingOrdersStatus } });
 
     if ( clientPendingOrders > 0 ) {
 
