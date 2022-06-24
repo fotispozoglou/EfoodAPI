@@ -16,6 +16,8 @@ const mongoSanitize = require('express-mongo-sanitize');
 
 const dbUrl = 'mongodb://localhost:27017/efood-api'; // process.env.DB_URL
 
+const logger = require('./logger/logger.js');
+
 mongoose.connect(dbUrl, {
   useUnifiedTopology: true,
 });
@@ -69,6 +71,8 @@ app.use((err, req, res, next) => {
   const { statusCode = 500 } = err;
 
   if (!err.message) err.message = 'Server Error';
+
+  logger.error( err.message );
   
   res.status( statusCode ).send(JSON.stringify({ status: GENERAL.ERROR }));
 

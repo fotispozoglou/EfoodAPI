@@ -2,6 +2,8 @@ const Order = require('../models/order.js');
 const Ingredient = require('../models/ingredient.js');
 const Tier = require('../models/tier.js');
 
+const jwt = require('jsonwebtoken');
+
 const { ORDER, GENERAL } = require('../config/statusCodes.js');
 
 module.exports.setOrderStatus = async ( req, res ) => {
@@ -74,7 +76,7 @@ module.exports.loadPendingOrders = async ( req, res ) => {
 
   const orders = await Order
     .find({ _id: { $in: ids } })
-    .select('_id status client time totalPrice orderID');
+    .select('_id client.name client.address time totalPrice orderID');
 
   res.send(JSON.stringify({ orders }));
 
@@ -98,7 +100,7 @@ module.exports.loadAcceptedOrders = async ( req, res ) => {
 
   const orders = await Order
     .find({ _id: { $in: ids } })
-    .select('_id status client time products totalPrice orderID')
+    .select('_id client.name products totalPrice orderID')
     .populate({ path: 'products.original', select: '_id name price' });
 
   res.send(JSON.stringify({ orders }));
@@ -153,10 +155,56 @@ module.exports.getCompletedOrders = async ( req, res ) => {
 
   const skip = ( page - 1 ) * 25;
 
-  const orders = await Order.find({ 'status.number': ORDER.STATUS_COMPLETED, 'time.sendAt': { $gt: ict } }).skip( skip ).limit( 25 );
+  const orders = await Order
+    .find({ 'status.number': ORDER.STATUS_COMPLETED, 'time.sendAt': { $gt: ict } })
+    .select('_id time totalPrice ')
+    .skip( skip )
+    .limit( 25 );
 
   const time = Date.now();
 
   res.send(JSON.stringify({ orders, time }));
+
+};
+
+module.exports.getOrderClientPhone = async ( req, res ) => {
+
+  const { orderID } = req.params;
+
+  const authHeader = req.headers['authorization'];
+
+  const api_token = authHeader && authHeader.split(' ')[1];
+
+  return jwt.verify(api_token, process.env.TOKEN_SECRET, async ( err , user ) => {
+
+    if (err) {
+      
+      if ( err.name === "TokenExpiredError" ) {
+
+        console.log(`TOKEN EXPIRED - SEND BY ${ req.ip }`);
+
+        return res.send(JSON.stringify({ tokenExpired: true }));
+
+      }
+
+      console.log(`OTHER TOKEN ERROR - SEND BY ${ req.ip }`);
+
+      return res.sendStatus(403);
+
+    }
+
+    if ( !user || user.isAdmin === false ) { 
+
+      console.log(`USER NOT ADMIN ( ${ user._id }, ${ user.username }, ${ user.permissions } ) - SEND BY ${ req.ip }`);
+      
+      return res.sendStatus( 403 );
+
+    }
+
+    const order = await Order.findOne({ _id: orderID }).select('client.phone');
+
+    return res.send(JSON.stringify({ status: GENERAL.SUCCESS, phone: order.client.phone }));
+
+  });
 
 };

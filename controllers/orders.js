@@ -150,7 +150,7 @@ module.exports.getClientHasActiveOrder = async ( req, res ) => {
 
   return jwt.verify( token, process.env.TOKEN_SECRET, async ( err, user ) => {
 
-    const foundOrder = await Order.findOne({ status: { $nin: [ ORDER.STATUS_COMPLETED, ORDER.STATUS_CANCELED ] }, user: user._id });
+    const foundOrder = await Order.findOne({ 'status.number': { $nin: [ ORDER.STATUS_COMPLETED, ORDER.STATUS_CANCELED ] }, user: user._id });
 
     const orderID = foundOrder ? foundOrder._id : "";
 

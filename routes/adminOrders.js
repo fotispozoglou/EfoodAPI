@@ -18,6 +18,8 @@ router.get('/delivery/:orderID', isAdmin, catchAsync(orders.getDeliveryOrder));
 
 router.get('/:orderID/products', isAdmin, catchAsync(orders.getOrderProducts));
 
+router.get('/:orderID/phone', isAdmin, catchAsync(orders.getOrderClientPhone));
+
 router.route('/:id/status', isAdmin)
   .post( catchAsync(orders.setOrderStatus) )
   .get( catchAsync(orders.getOrderStatus) );
