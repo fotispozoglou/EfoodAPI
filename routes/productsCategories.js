@@ -9,19 +9,19 @@ const { isAdmin } = require('../middlewares/general.js');
 const { PERMISSIONS } = require('../config/permissions.js');
 
 router.route('/')
-  .delete(productsCategories.deleteProductsCategories);
+  .delete( isAdmin, productsCategories.deleteProductsCategories);
 
 router.route('/all')
-  .get(productsCategories.getAllProductsCategories);
+  .get( isAdmin,productsCategories.getAllProductsCategories);
 
 router.route('/all')
   .post(isAdmin, productsCategories.getAllProductsCategories);
 
 router.route('/add')
-  .post(validateProductsCategory, productsCategories.addProductsCategory);
+  .post( isAdmin, validateProductsCategory, productsCategories.addProductsCategory);
 
 router.route('/:id')
   .get(productsCategories.getProductsCategoryData)
-  .put(validateProductsCategory, productsCategories.updateProductsCategory)
+  .put( isAdmin, validateProductsCategory, productsCategories.updateProductsCategory)
 
 module.exports = router;

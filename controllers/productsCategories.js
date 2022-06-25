@@ -1,4 +1,5 @@
 const { GENERAL, ITEM } = require('../config/statusCodes.js');
+const logger = require('../logger/logger.js');
 const ProductsCategory = require('../models/productsCategory.js');
 
 module.exports.getAllProductsCategories = async ( req, res ) => {
@@ -11,6 +12,8 @@ module.exports.getAllProductsCategories = async ( req, res ) => {
 
 module.exports.addProductsCategory = async ( req, res ) => {
 
+  const { user } = req;
+
   try {
 
     const { name } = req.body;
@@ -18,6 +21,8 @@ module.exports.addProductsCategory = async ( req, res ) => {
     const newProductsCategory = new ProductsCategory({ name });
 
     await newProductsCategory.save();
+
+    logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ ADDED PRODUCTS CATEGORY ${ newProductsCategory._id } ]`)
 
     res.send(JSON.stringify({ status: GENERAL.SUCCESS, newProductsCategory } ));
 
@@ -49,6 +54,8 @@ module.exports.getProductsCategoryData = async ( req, res ) => {
 
 module.exports.updateProductsCategory = async ( req, res ) => {
 
+  const { user } = req;
+
   try {
 
     const { id } = req.params;
@@ -56,6 +63,8 @@ module.exports.updateProductsCategory = async ( req, res ) => {
     const data = req.body;
 
     await ProductsCategory.updateOne({ _id: id }, data);
+
+    logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ UPDATED PRODUCTS CATEGORY ${ id } ]`)
 
     res.send(JSON.stringify({ status: GENERAL.SUCCESS }));
 
@@ -69,6 +78,8 @@ module.exports.updateProductsCategory = async ( req, res ) => {
 
 module.exports.deleteProductsCategories = async ( req, res ) => {
 
+  const { user } = req;
+
   try {
 
     const { productsCategoriesIDS } = req.body;
@@ -78,6 +89,8 @@ module.exports.deleteProductsCategories = async ( req, res ) => {
       await ProductsCategory.deleteOne({ _id: productsCategoryID });
 
     }
+
+    logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ DELETED ${ productsCategoriesIDS.length } PRODUCTS CATEGORY/IES ${ productsCategoriesIDS.join(',') } ]`);
 
     res.send(JSON.stringify({ status: GENERAL.SUCCESS }));
 

@@ -154,8 +154,6 @@ module.exports.validateTiers = async ( req, res, next ) => {
     .max( maxSelections, 'Minimum Selection Must Be Smaller Than Maximum Selections' )
     .min( 0, 'Minimum Selections Must Be Greater Than Or Equal To 0' ); 
 
-  console.log(hasValidMinSelections);
-
   const hasValidType = new Validate( type )
     .enum(['radio', 'checkbox'], 'Select A Valid Type');
 

@@ -1,4 +1,5 @@
 const { GENERAL, ITEM } = require('../config/statusCodes.js');
+const logger = require('../logger/logger.js');
 const Product = require('../models/product.js');
 
 const formatResponseProduct = p => {
@@ -29,6 +30,8 @@ module.exports.getAllProducts = async ( req, res ) => {
 
 module.exports.addProduct = async ( req, res ) => {
 
+  const { user } = req;
+
   try {
 
     const { name, price, description, category, quantity, minQuantity, tiers } = req.body;
@@ -36,6 +39,8 @@ module.exports.addProduct = async ( req, res ) => {
     const newProduct = new Product({ name, price, description, category, quantity, minQuantity, tiers: tiers });
 
     await newProduct.save();  
+
+    logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ ADDED PRODUCT ${ newProduct._id } ]`);
 
     res.send(JSON.stringify({ status: GENERAL.SUCCESS, newProduct: { _id: newProduct._id, name } }));
 
@@ -69,6 +74,8 @@ module.exports.getProductData = async ( req, res ) => {
 
 module.exports.updateProduct = async ( req, res ) => {
 
+  const { user } = req;
+
   try {
 
     const { id } = req.params;
@@ -78,6 +85,8 @@ module.exports.updateProduct = async ( req, res ) => {
     const { name, price, minQuantity, quantity, description, category, tiers, available } = data;
 
     await Product.updateOne({ _id: id }, { name, price, minQuantity, quantity, description, category, tiers, available });
+
+    logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ UPDATED PRODUCT ${ id } ]`);
 
     res.send(JSON.stringify({ status: GENERAL.SUCCESS }));
 
@@ -91,11 +100,15 @@ module.exports.updateProduct = async ( req, res ) => {
 
 module.exports.deleteProducts = async ( req, res ) => {
 
+  const { user } = req;
+
   try {
 
     const { productsIDS } = req.body;
 
     await Product.deleteMany({ _id: { $in: productsIDS } });
+
+    logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ DELETED ${ productsIDS.length } PRODUCT/S ${ productsIDS.join(',') } ]`);
 
     res.send(JSON.stringify({ status: GENERAL.SUCCESS }));
 
@@ -109,15 +122,21 @@ module.exports.deleteProducts = async ( req, res ) => {
 
 module.exports.updateProductAvailability = async ( req, res ) => {
 
+  const { user } = req;
+
   const { id, available } = req.body;
 
   await Product.updateOne({ _id: id }, { $set: { available } });
+
+  logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ SET PRODUCT ${ id } AVAILABILITY: ${ String( available ).toUpperCase()  } ]`);
 
   res.send(JSON.stringify({ status: GENERAL.SUCCESS }));
 
 };
 
 module.exports.controlSwitchProductsAvailability = async ( req, res ) => {
+
+  const { user } = req;
 
   const { productsIDS } = req.body;
 
@@ -134,6 +153,10 @@ module.exports.controlSwitchProductsAvailability = async ( req, res ) => {
     await product.save();
 
   }
+
+  const productsString = products.map(({_id, available}) => { return `${ _id } => ${ String( available ).toUpperCase() }` }).join(',');
+
+  logger.info(`ADMIN ${ user.username } ( ${ user._id } ) ${ productsString }`);
 
   res.send(JSON.stringify({ status: GENERAL.SUCCESS, products }));
 

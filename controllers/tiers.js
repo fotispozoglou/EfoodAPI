@@ -1,4 +1,5 @@
 const { GENERAL, ITEM } = require('../config/statusCodes.js');
+const logger = require('../logger/logger.js');
 const Tier = require('../models/tier.js');
 
 module.exports.getAllTiers = async ( req, res ) => {
@@ -11,6 +12,8 @@ module.exports.getAllTiers = async ( req, res ) => {
 
 module.exports.addTier = async ( req, res ) => {
 
+  const { user } = req;
+
   try {
 
     const { name, ingredients, selectedIngredients, maxSelections, minSelections, type } = req.body;
@@ -18,6 +21,8 @@ module.exports.addTier = async ( req, res ) => {
     const newTier = new Tier({ name, ingredients, selectedIngredients, maxSelections, minSelections, type });
 
     await newTier.save();
+
+    logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ ADDED TIER ${ newTier._id } ]`);
 
     res.send(JSON.stringify({ status: GENERAL.SUCCESS, newTier }));
 
@@ -56,6 +61,8 @@ module.exports.getTierData = async ( req, res ) => {
 
 module.exports.updateTier = async ( req, res ) => {
 
+  const { user } = req;
+
   try {
 
     const { id } = req.params;
@@ -64,9 +71,13 @@ module.exports.updateTier = async ( req, res ) => {
 
     await Tier.updateOne({ _id: id }, data);
 
+    logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ UPDATED TIER ${ id } ]`);
+
     res.send(JSON.stringify({ status: GENERAL.SUCCESS }));
 
   } catch ( e ) {
+
+    console.log(e);
 
     return res.status( 200 ).send( JSON.stringify({ status: ITEM.UPDATING_ERROR }) );
 
@@ -75,6 +86,8 @@ module.exports.updateTier = async ( req, res ) => {
 };
 
 module.exports.deleteTiers = async ( req, res ) => {
+
+  const { user } = req;
 
   try {
 
@@ -85,6 +98,8 @@ module.exports.deleteTiers = async ( req, res ) => {
       await Tier.deleteOne({ _id: tierID });
 
     }
+
+    logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ DELETED ${ tiersIDS.length } TIER/S ${ tiersIDS.join(',') } ]`);
 
     res.send(JSON.stringify({ status: GENERAL.SUCCESS }));
 

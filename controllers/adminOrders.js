@@ -6,10 +6,15 @@ const jwt = require('jsonwebtoken');
 
 const { ORDER, GENERAL } = require('../config/statusCodes.js');
 
+const logger = require('../logger/logger.js');
+
 module.exports.setOrderStatus = async ( req, res ) => {
 
   const { id } = req.params;
   const { newStatus, override = false } = req.body;
+  const { username, _id } = req.user;
+
+  logger.info(`ADMIN ${ username } ( ${ _id } ) [ SET ORDER { ${ id } } STATUS { ${ newStatus } } ]`);
 
   const order = await Order.findById( id );
 
@@ -181,13 +186,13 @@ module.exports.getOrderClientPhone = async ( req, res ) => {
       
       if ( err.name === "TokenExpiredError" ) {
 
-        console.log(`TOKEN EXPIRED - SEND BY ${ req.ip }`);
+        logger.warn(`TOKEN EXPIRED - SEND BY ${ req.ip }`);
 
         return res.send(JSON.stringify({ tokenExpired: true }));
 
       }
 
-      console.log(`OTHER TOKEN ERROR - SEND BY ${ req.ip }`);
+      logger.warn(`OTHER TOKEN ERROR - SEND BY ${ req.ip }`);
 
       return res.sendStatus(403);
 
@@ -195,11 +200,13 @@ module.exports.getOrderClientPhone = async ( req, res ) => {
 
     if ( !user || user.isAdmin === false ) { 
 
-      console.log(`USER NOT ADMIN ( ${ user._id }, ${ user.username }, ${ user.permissions } ) - SEND BY ${ req.ip }`);
+      logger.warn(`USER NOT ADMIN ( ${ user._id }, ${ user.username }, ${ user.permissions } ) - SEND BY ${ req.ip }`);
       
       return res.sendStatus( 403 );
 
     }
+
+    logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ REQUEST ORDER ${ orderID } PHONE ]`);
 
     const order = await Order.findOne({ _id: orderID }).select('client.phone');
 

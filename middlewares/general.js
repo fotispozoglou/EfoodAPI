@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 
+const logger = require('../logger/logger.js');
+
 const hasValidToken = async ( req, res, next ) => {
 
   const authHeader = req.headers['authorization'];
@@ -38,13 +40,15 @@ const authenticateClientServer = ( req, res, next ) => {
       
       if ( err.name === "TokenExpiredError" ) {
 
+        logger.warn(`TOKEN EXPIRED - SEND BY ${ req.ip }`);
+
         console.log(`TOKEN EXPIRED - SEND BY ${ req.ip }`);
 
         return res.send(JSON.stringify({ tokenExpired: true }));
 
       }
 
-      console.log(`OTHER TOKEN ERROR - SEND BY ${ req.ip }`);
+      logger.warn(`OTHER TOKEN ERROR - SEND BY ${ req.ip }`);
 
       return res.sendStatus(403);
 
@@ -70,9 +74,7 @@ const isAdmin = async ( req, res, next ) => {
 
   if (api_token == null) {
 
-    console.log(`NULL TOKEN - SEND BY ${ req.ip }`);
-
-    console.log(api_token);
+    logger.warn(`NULL TOKEN - SEND BY ${ req.ip }`);
 
     return res.sendStatus(401);
 
@@ -84,13 +86,13 @@ const isAdmin = async ( req, res, next ) => {
       
       if ( err.name === "TokenExpiredError" ) {
 
-        console.log(`TOKEN EXPIRED - SEND BY ${ req.ip }`);
+        logger.warn(`TOKEN EXPIRED - SEND BY ${ req.ip }`);
 
         return res.send(JSON.stringify({ tokenExpired: true }));
 
       }
 
-      console.log(`OTHER TOKEN ERROR - SEND BY ${ req.ip }`);
+      logger.warn(`NULL TOKEN - SEND BY ${ req.ip }`);
 
       return res.sendStatus(403);
 
@@ -98,11 +100,13 @@ const isAdmin = async ( req, res, next ) => {
 
     if ( !user || user.isAdmin === false ) { 
 
-      console.log(`USER NOT ADMIN ( ${ user._id }, ${ user.username }, ${ user.permissions } ) - SEND BY ${ req.ip }`);
+      logger.warn(`USER NOT ADMIN ( ${ user._id }, ${ user.username }, ${ user.permissions } ) - SEND BY ${ req.ip }`);
       
       return res.sendStatus( 403 );
 
     }
+
+    req.user = user;
 
     return next();
 

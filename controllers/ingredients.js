@@ -1,4 +1,5 @@
 const { GENERAL, ITEM } = require('../config/statusCodes.js');
+const logger = require('../logger/logger.js');
 const Ingredient = require('../models/ingredient.js');
 
 module.exports.getAllIngredients = async ( req, res ) => {
@@ -11,6 +12,8 @@ module.exports.getAllIngredients = async ( req, res ) => {
 
 module.exports.addIngredient = async ( req, res ) => {
 
+  const { user } = req;
+
   try {
 
     const { name, price } = req.body;
@@ -18,6 +21,8 @@ module.exports.addIngredient = async ( req, res ) => {
     const newIngredient = new Ingredient({ name, price });
 
     await newIngredient.save();
+
+    logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ ADDED INGREDIENT ${ newIngredient._id } ]`);
 
     res.send(JSON.stringify({ status: GENERAL.SUCCESS, newIngredient }));
 
@@ -49,6 +54,8 @@ module.exports.getIngredientData = async ( req, res ) => {
 
 module.exports.updateIngredient = async ( req, res ) => {
 
+  const { user } = req;
+
   try {
 
     const { id } = req.params;
@@ -56,6 +63,8 @@ module.exports.updateIngredient = async ( req, res ) => {
     const data = req.body;
 
     await Ingredient.updateOne({ _id: id }, data);
+
+    logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ UPDATED INGREDIENT ${ id } ]`);
 
     res.send(JSON.stringify({ status: GENERAL.SUCCESS }));
 
@@ -69,6 +78,8 @@ module.exports.updateIngredient = async ( req, res ) => {
 
 module.exports.deleteIngredients = async ( req, res ) => {
 
+  const { user } = req;
+
   try {
 
     const { ingredientsIDS } = req.body;
@@ -78,6 +89,8 @@ module.exports.deleteIngredients = async ( req, res ) => {
       await Ingredient.deleteOne({ _id: ingredientID });
 
     }
+
+    logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ DELETED ${ ingredientsIDS.length } INGREDIENT/S ${ ingredientsIDS.join(',') } ]`);
 
     res.send(JSON.stringify({ status: GENERAL.SUCCESS }));
 

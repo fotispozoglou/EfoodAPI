@@ -20,8 +20,8 @@ router.get('/:orderID/products', isAdmin, catchAsync(orders.getOrderProducts));
 
 router.get('/:orderID/phone', isAdmin, catchAsync(orders.getOrderClientPhone));
 
-router.route('/:id/status', isAdmin)
-  .post( catchAsync(orders.setOrderStatus) )
-  .get( catchAsync(orders.getOrderStatus) );
+router.route('/:id/status')
+  .post( isAdmin, catchAsync(orders.setOrderStatus) )
+  .get( isAdmin, catchAsync(orders.getOrderStatus) );
 
 module.exports = router;

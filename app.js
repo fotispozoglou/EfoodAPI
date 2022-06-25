@@ -18,6 +18,8 @@ const dbUrl = 'mongodb://localhost:27017/efood-api'; // process.env.DB_URL
 
 const logger = require('./logger/logger.js');
 
+const jwt = require('jsonwebtoken');
+
 mongoose.connect(dbUrl, {
   useUnifiedTopology: true,
 });
@@ -72,7 +74,7 @@ app.use((err, req, res, next) => {
 
   if (!err.message) err.message = 'Server Error';
 
-  logger.error( err.message );
+  logger.error( err.stack );
   
   res.status( statusCode ).send(JSON.stringify({ status: GENERAL.ERROR }));
 

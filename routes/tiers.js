@@ -9,16 +9,16 @@ const { isAdmin } = require('../middlewares/general.js');
 const { PERMISSIONS } = require('../config/permissions.js');
 
 router.route('/')
-  .delete(tiers.deleteTiers);
+  .delete( isAdmin, tiers.deleteTiers);
 
 router.route('/all')
   .get(isAdmin, tiers.getAllTiers);
 
 router.route('/add')
-  .put(validateTiers, tiers.addTier);
+  .put( isAdmin, validateTiers, tiers.addTier);
 
 router.route('/:id')
-  .put(validateTiers, tiers.updateTier);
+  .put( isAdmin, validateTiers, tiers.updateTier);
 
 router.route('/:id/:populate')
   .get(tiers.getTierData);
