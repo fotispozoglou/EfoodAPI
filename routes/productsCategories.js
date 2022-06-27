@@ -12,7 +12,7 @@ router.route('/')
   .delete( isAdmin, productsCategories.deleteProductsCategories);
 
 router.route('/all')
-  .get( isAdmin,productsCategories.getAllProductsCategories);
+  .get( productsCategories.getAllProductsCategories);
 
 router.route('/all')
   .post(isAdmin, productsCategories.getAllProductsCategories);
