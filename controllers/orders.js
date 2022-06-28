@@ -80,6 +80,8 @@ module.exports.completeOrder = async ( req, res ) => {
 
   const { order } = req.body;
 
+  console.log(order);
+
   const formatedOrder = formatOrderObject( order );
 
   order.client.name = order.user.username;
@@ -88,7 +90,7 @@ module.exports.completeOrder = async ( req, res ) => {
 
   const newOrder = new Order( formatedOrder );
 
-  await newOrder.save();
+  // await newOrder.save();
 
   const newOrderResponse = await Order.findById( newOrder.id ).select('_id orderID totalPrice products status time')
     .populate({ path: 'products', populate: { path: 'original', select: 'name price' }, select: 'quantity' });
