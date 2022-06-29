@@ -172,8 +172,8 @@ module.exports.ingredients = [
 
 module.exports.tiers = [
   { name: 'Sauce', ingredients: [ SAUCE ], selectedIngredients: [  ], maxSelections: 2, minSelections: 0, type: "checkbox" },
-  { name: 'Συνοδευτικά', ingredients: [ SINOD ], selectedIngredients: [  ], maxSelections: 1, minSelections: 0, type: "checkbox" },
-  { name: 'Λαχανικά', ingredients: [ LAXAN ], selectedIngredients: [  ], maxSelections: 5, minSelections: 0, type: "checkbox" },
-  { name: 'Αλλαντικά', ingredients: [ ALLNT ], selectedIngredients: [  ], maxSelections: 3, minSelections: 0, type: "checkbox" },
+  { name: 'Συνοδευτικά', ingredients: [ SINOD ], selectedIngredients: [  ], maxSelections: 1, minSelections: 0, type: "radio" },
+  { name: 'Λαχανικά', ingredients: [ LAXAN ], selectedIngredients: [  ], maxSelections: 5, minSelections: 0, type: "radio" },
+  { name: 'Αλλαντικά', ingredients: [ ALLNT ], selectedIngredients: [  ], maxSelections: 1, minSelections: 0, type: "radio" },
   { name: 'Συντήρηση', ingredients: [ SYNTI ], selectedIngredients: [  ], maxSelections: 1, minSelections: 0, type: "checkbox" }
 ];
