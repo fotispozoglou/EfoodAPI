@@ -163,3 +163,26 @@ module.exports.getClientHasActiveOrder = async ( req, res ) => {
   });
 
 };
+
+module.exports.removeClientInfo = async ( req, res ) => {
+
+  const { userID } = req.body;
+
+  const userOrders = await Order.find({ user: userID, 'status.number': { $nin: [ ORDER.STATUS_COMPLETED, ORDER.STATUS_CANCELED ] } });
+
+  if ( userOrders.length > 0 ) return res.send( JSON.stringify({ hasPendingOrders: true, status: GENERAL.SUCCESS }) );
+
+  const clearedValues = { 
+    user: '', 
+    'client.address': '', 
+    'client.floor': '',
+    'client.phone': '',
+    'client.comments': '',
+    'client.name': ''
+  };
+
+  await Order.updateMany({ user: userID }, { $set: clearedValues });
+
+  res.send(JSON.stringify({ status: GENERAL.SUCCESS }));
+
+};

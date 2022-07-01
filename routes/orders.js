@@ -11,6 +11,8 @@ router.route('/')
 
 router.get('/all', isValidUser, catchAsync(orders.getClientOrders));
 
+router.post('/removeClientInfo', authenticateClientServer, catchAsync(orders.removeClientInfo));
+
 router.route('/user/active')
   .get( isValidUser, catchAsync(orders.getClientHasActiveOrder) );
 
