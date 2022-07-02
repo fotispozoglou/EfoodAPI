@@ -8,7 +8,8 @@ module.exports.clients = [
     name: "fotis",
     phone: `69${ Math.floor( Math.random() * 89000000 + 10000000 ) }`,
     status: {
-      number: ORDER.STATUS_ACCEPTED
+      number: ORDER.STATUS_ACCEPTED,
+      lastUpdated: Date.now()
     }
   },
   { 
@@ -18,7 +19,8 @@ module.exports.clients = [
     name: "nikos",
     phone: `69${ Math.floor( Math.random() * 89000000 + 10000000 ) }`,
     status: {
-      number: ORDER.STATUS_ACCEPTED
+      number: ORDER.STATUS_ACCEPTED,
+      lastUpdated: Date.now()
     }
   },
   { 
@@ -28,7 +30,8 @@ module.exports.clients = [
     name: "petros",
     phone: `69${ Math.floor( Math.random() * 89000000 + 10000000 ) }`,
     status: {
-      number: ORDER.STATUS_ACCEPTED
+      number: ORDER.STATUS_ACCEPTED,
+      lastUpdated: Date.now()
     }
   },
   { 
@@ -38,7 +41,8 @@ module.exports.clients = [
     name: "eleni",
     phone: `69${ Math.floor( Math.random() * 89000000 + 10000000 ) }`,
     status: {
-      number: ORDER.STATUS_DELIVERING
+      number: ORDER.STATUS_DELIVERING,
+      lastUpdated: Date.now()
     }
   },
   { 
@@ -48,7 +52,8 @@ module.exports.clients = [
     name: "maria",
     phone: `69${ Math.floor( Math.random() * 89000000 + 10000000 ) }`,
     status: {
-      number: ORDER.STATUS_DELIVERING
+      number: ORDER.STATUS_DELIVERING,
+      lastUpdated: Date.now()
     }
   },
   { 
@@ -58,7 +63,8 @@ module.exports.clients = [
     name: "kostantina",
     phone: `69${ Math.floor( Math.random() * 89000000 + 10000000 ) }`,
     status: {
-      number: ORDER.STATUS_DELIVERING
+      number: ORDER.STATUS_DELIVERING,
+      lastUpdated: Date.now()
     }
   },
   { 
@@ -68,7 +74,8 @@ module.exports.clients = [
     name: "giorgos",
     phone: `69${ Math.floor( Math.random() * 89000000 + 10000000 ) }`,
     status: {
-      number: ORDER.STATUS_PENDING
+      number: ORDER.STATUS_PENDING,
+      lastUpdated: Date.now()
     }
   },
   { 
@@ -78,7 +85,8 @@ module.exports.clients = [
     name: "eirhnh",
     phone: `69${ Math.floor( Math.random() * 89000000 + 10000000 ) }`,
     status: {
-      number: ORDER.STATUS_PENDING
+      number: ORDER.STATUS_PENDING,
+      lastUpdated: Date.now()
     }
   },
   { 
@@ -88,7 +96,8 @@ module.exports.clients = [
     name: "kostas",
     phone: `69${ Math.floor( Math.random() * 89000000 + 10000000 ) }`,
     status: {
-      number: ORDER.STATUS_PENDING
+      number: ORDER.STATUS_PENDING,
+      lastUpdated: Date.now()
     }
   }
 ];

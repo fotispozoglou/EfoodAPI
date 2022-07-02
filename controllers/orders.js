@@ -80,8 +80,6 @@ module.exports.completeOrder = async ( req, res ) => {
 
   const { order } = req.body;
 
-  console.log(order);
-
   const formatedOrder = formatOrderObject( order );
 
   order.client.name = order.user.username;

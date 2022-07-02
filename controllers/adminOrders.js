@@ -162,9 +162,16 @@ module.exports.getCompletedOrders = async ( req, res ) => {
 
   const orders = await Order
     .find({ 'status.number': ORDER.STATUS_COMPLETED, 'time.sendAt': { $gt: ict } })
-    .select('_id time totalPrice ')
+    .select('_id time totalPrice products client orderID')
     .skip( skip )
-    .limit( 25 );
+    .limit( 25 )
+    .lean();
+
+  for ( const order of orders ) {
+
+    order.products = order.products.length;
+
+  }
 
   const time = Date.now();
 

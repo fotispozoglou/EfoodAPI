@@ -53,6 +53,10 @@ const createOrder = async () => {
 
   console.log(`ORDER DATE: ${ new Date(randomSendAT).getDate() }:${ new Date(randomSendAT).getMonth() + 1 }:${ new Date(randomSendAT).getFullYear() }`);
 
+  randomClient.status.lastUpdated = Date.now();
+
+  randomClient.status.number = ORDER.STATUS_PENDING;
+
   const order = new Order( 
     { 
       client: randomClient, 
@@ -111,7 +115,7 @@ const init = async () => {
   
     clearInterval( orderInterval );
 
-    // await deleteMadeOrders();
+    await deleteMadeOrders();
 
     console.log("DELETED ORDERS");
 
