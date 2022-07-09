@@ -68,18 +68,6 @@ app.all('*', ( req, res ) => {
 
 });
 
-app.use((err, req, res, next) => {
-  
-  const { statusCode = 500 } = err;
-
-  if (!err.message) err.message = 'Server Error';
-
-  logger.error( err.stack );
-  
-  res.status( statusCode ).send(JSON.stringify({ status: GENERAL.ERROR }));
-
-});
-
 app.listen(port, () => {
 
   console.log("API STARTED");

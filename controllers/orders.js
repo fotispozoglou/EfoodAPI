@@ -21,6 +21,8 @@ module.exports.getOrderStatus = async ( req, res ) => {
 
   const orderStatus = await Order.findById( id ).select('status');
 
+  if ( !orderStatus ) return res.send(JSON.stringify({ orderStatus: { number: ORDER.NOT_FOUND } }));
+
   res.send(JSON.stringify({ orderStatus: orderStatus.status }));
 
 };
@@ -82,7 +84,7 @@ module.exports.completeOrder = async ( req, res ) => {
 
   const formatedOrder = formatOrderObject( order );
 
-  order.client.name = order.user.username;
+  order.client.name = order.user.name;
 
   order.totalPrice = await calculateOrderTotalPrice( formatedOrder.products );
 
@@ -176,7 +178,7 @@ module.exports.removeClientInfo = async ( req, res ) => {
     'client.floor': '',
     'client.phone': '',
     'client.comments': '',
-    'client.name': ''
+    'client.name': 'deleted'
   };
 
   await Order.updateMany({ user: userID }, { $set: clearedValues });
