@@ -80,7 +80,7 @@ module.exports.loadPendingOrders = async ( req, res ) => {
   const { ids } = req.body;
 
   const orders = await Order
-    .find({ _id: { $in: ids } })
+    .find({ _id: { $in: ids }, 'status.number': ORDER.STATUS_PENDING })
     .select('_id client.name client.address time totalPrice orderID');
 
   res.send(JSON.stringify({ orders }));
@@ -92,7 +92,7 @@ module.exports.loadDeliveryOrders = async ( req, res ) => {
   const { ids } = req.body;
 
   const orders = await Order
-    .find({ _id: { $in: ids } })
+    .find({ _id: { $in: ids }, 'status.number': ORDER.STATUS_DELIVERING })
     .select('_id status client time totalPrice orderID');
 
   res.send(JSON.stringify({ orders }));
@@ -101,10 +101,10 @@ module.exports.loadDeliveryOrders = async ( req, res ) => {
 
 module.exports.loadAcceptedOrders = async ( req, res ) => {
 
-  const { ids } = req.body;
+  const { ids } = req.body; 
 
   const orders = await Order
-    .find({ _id: { $in: ids } })
+    .find({ _id: { $in: ids }, 'status.number': ORDER.STATUS_ACCEPTED })
     .select('_id client.name products totalPrice orderID')
     .populate({ path: 'products.original', select: '_id name price' });
 
