@@ -7,8 +7,6 @@ const getTimeString = time => {
 
   return `${ date.toLocaleDateString( 'en-us',  {weekday:'long'} ) }`;
 
-  // return `${ date.getDate() }/${ date.getMonth() + 1 }`;
-
 };
 
 const categorizeOrders = orders => {
