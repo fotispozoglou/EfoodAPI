@@ -52,6 +52,12 @@ const formatOrderObject = order => {
 
   order.time = { sendAt: date };
 
+  if ( !order.client.comments ) {
+
+    order.client.comments = 'no comments';
+
+  }
+
   order.orderID = Math.floor((Math.random() * 899999) + 100000);
 
   return order;
