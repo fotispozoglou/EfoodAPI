@@ -138,6 +138,19 @@ module.exports.getDeliveryOrder = async ( req, res ) => {
 
 };
 
+module.exports.getCompletedOrder = async ( req, res ) => {
+
+  const { orderID } = req.params;
+
+  const order = await Order.findById( orderID )
+    .select('_id client products totalPrice user orderID')
+    .populate({ path: 'products.original', select: '_id name price' })
+    .populate({ path: 'products.ingredients', select: 'name' });
+
+  res.send(JSON.stringify({ order }));
+
+};
+
 module.exports.searchCompletedOrders = async ( req, res ) => {
 
   const { value, excluded } = req.body;

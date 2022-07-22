@@ -15,6 +15,7 @@ router.post('/load/delivery', isAdmin, catchAsync(orders.loadDeliveryOrders));
 router.post('/load/accepted', isAdmin, catchAsync(orders.loadAcceptedOrders));
 
 router.get('/delivery/:orderID', isAdmin, catchAsync(orders.getDeliveryOrder));
+router.get('/completed/:orderID', isAdmin, catchAsync(orders.getCompletedOrder));
 
 router.get('/:orderID/products', isAdmin, catchAsync(orders.getOrderProducts));
 
