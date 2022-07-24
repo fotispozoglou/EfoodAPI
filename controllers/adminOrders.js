@@ -130,7 +130,7 @@ module.exports.getDeliveryOrder = async ( req, res ) => {
   const { orderID } = req.params;
 
   const order = await Order.findById( orderID )
-    .select('_id client products totalPrice user')
+    .select('_id client products totalPrice user orderID')
     .populate({ path: 'products.original', select: '_id name price' })
     .populate({ path: 'products.ingredients', select: 'name' });
 
