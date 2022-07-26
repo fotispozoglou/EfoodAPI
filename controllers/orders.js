@@ -5,6 +5,8 @@ const Tier = require('../models/tier.js');
 const { ORDER, GENERAL } = require('../config/statusCodes.js');
 const Product = require('../models/product.js');
 
+const sanitizeHtml = require('sanitize-html');
+
 const jwt = require('jsonwebtoken');
 
 const getToken = headers => {
@@ -27,6 +29,17 @@ module.exports.getOrderStatus = async ( req, res ) => {
 
 };
 
+const sanitizeClient = client => {
+
+  return {
+    phone: sanitizeHtml( client.phone ),
+    address: sanitizeHtml( client.address ),
+    floor: sanitizeHtml( client.floor ),
+    comments: sanitizeHtml( client.comments )
+  }
+
+};
+
 const formatOrderObject = order => {
 
   const products = [];
@@ -37,11 +50,21 @@ const formatOrderObject = order => {
 
     products.push({ original: product._id, quantity: product.quantity, ingredients: [ ...ingredients ], comments: product.comments, description: product.description });
 
+    product.description = sanitizeHtml( product.description );
+
+    product.comments = sanitizeHtml( product.comments );
+
+    product.quantity = sanitizeHtml( product.quantity );
+
   }
 
+  const sanitizedClient = sanitizeClient( order.client );
+
   delete order.products;
+  delete order.client;
 
   order.products = [ ...products ];
+  order.client = sanitizedClient;
 
   const date = Date.now();
 
@@ -90,7 +113,7 @@ module.exports.completeOrder = async ( req, res ) => {
 
   const formatedOrder = formatOrderObject( order );
 
-  order.client.name = order.user.name;
+  order.client.name = sanitizeHtml(order.user.name);
 
   order.totalPrice = await calculateOrderTotalPrice( formatedOrder.products );
 
@@ -128,6 +151,8 @@ module.exports.getClientOrder = async ( req, res ) => {
   jwt.verify( token, process.env.TOKEN_SECRET, async ( err, user ) => {
 
     const foundOrder = await Order.findById( orderID );
+
+    if ( !foundOrder ) return res.sendStatus( 401 );
 
     const ownedByUser = foundOrder.ownedBy( user._id );
 

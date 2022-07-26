@@ -2,6 +2,8 @@ const { GENERAL, ITEM } = require('../config/statusCodes.js');
 const logger = require('../logger/logger.js');
 const Product = require('../models/product.js');
 
+const sanitizeHtml = require('sanitize-html');
+
 const formatResponseProduct = p => {
 
   return {
@@ -34,15 +36,24 @@ module.exports.addProduct = async ( req, res ) => {
 
   try {
 
-    const { name, price, description, category, quantity, minQuantity, tiers } = req.body;
+    const { available, name, price, description, category, quantity, minQuantity, tiers } = req.body;
 
-    const newProduct = new Product({ name, price, description, category, quantity, minQuantity, tiers: tiers });
+    const newProduct = new Product({ 
+      name: sanitizeHtml( name ), 
+      price: sanitizeHtml( price ), 
+      description: sanitizeHtml( description ), 
+      category: category, 
+      quantity: sanitizeHtml( quantity ), 
+      minQuantity: sanitizeHtml( minQuantity ), 
+      available: sanitizeHtml( available ),
+      tiers: tiers 
+    });
 
     await newProduct.save();  
 
     logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ ADDED PRODUCT ${ newProduct._id } ]`);
 
-    res.send(JSON.stringify({ status: GENERAL.SUCCESS, newProduct: { _id: newProduct._id, name } }));
+    res.send(JSON.stringify({ status: GENERAL.SUCCESS, newProduct: { _id: newProduct._id, name: newProduct.name } }));
 
   } catch ( e ) {
 
@@ -84,7 +95,16 @@ module.exports.updateProduct = async ( req, res ) => {
 
     const { name, price, minQuantity, quantity, description, category, tiers, available } = data;
 
-    await Product.updateOne({ _id: id }, { name, price, minQuantity, quantity, description, category, tiers, available });
+    await Product.updateOne({ _id: id }, {  
+      name: sanitizeHtml( name ), 
+      price: sanitizeHtml( price ), 
+      description: sanitizeHtml( description ), 
+      category: category, 
+      quantity: sanitizeHtml( quantity ), 
+      minQuantity: sanitizeHtml( minQuantity ), 
+      available: sanitizeHtml( available ),
+      tiers: tiers
+    });
 
     logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ UPDATED PRODUCT ${ id } ]`);
 
@@ -105,6 +125,8 @@ module.exports.deleteProducts = async ( req, res ) => {
   try {
 
     const { productsIDS } = req.body;
+
+    if ( !Array.isArray( productsIDS ) ) throw new Error("ERROR");
 
     await Product.deleteMany({ _id: { $in: productsIDS } });
 

@@ -11,6 +11,7 @@ const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
 const { SERVER_IP } = require('./config/config.js');
+const helmet = require('helmet');
 
 const mongoSanitize = require('express-mongo-sanitize');
 
@@ -49,6 +50,8 @@ app.use(express.json());
 app.use(cors( corsOptions ));
 app.use(mongoSanitize());
 
+app.use(helmet.hidePoweredBy({ setTo: 'PHP 4.2.0' }));
+
 app.use(function(req, res, next) {
   res.locals.userToken = req.userToken;  
   next();
@@ -65,6 +68,26 @@ app.use('/analytics', analyticsRoutes);
 app.all('*', ( req, res ) => {
 
   res.status( 403 ).send();
+
+});
+
+app.use((err, req, res, next) => {
+  
+  const { statusCode = 500 } = err;
+
+  if (!err.message) err.message = 'Server Error';
+
+  // console.log(statusCode);
+
+  // if (err.code !== 'EBADCSRFTOKEN') {
+
+
+
+  // }
+
+  logger.info( err.stack );
+  
+  res.status( statusCode ).send(JSON.stringify({ status: GENERAL.ERROR }));
 
 });
 

@@ -36,6 +36,14 @@ class Validate {
   min( minValue, errorMessage ) { this.handleStatement( parseInt(this._value) < minValue, errorMessage ); return this; }
   max( maxValue, errorMessage ) { this.handleStatement( parseInt(this._value) > maxValue, errorMessage ); return this; }
 
+  number( errorMessage ) {
+
+    this.handleStatement( isNaN( this._value ), errorMessage );
+
+    return this;
+
+  }
+
   required( errorMessage ) { 
 
     const isNotNumber = isNaN( this._value );

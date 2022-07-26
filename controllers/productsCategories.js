@@ -2,6 +2,8 @@ const { GENERAL, ITEM } = require('../config/statusCodes.js');
 const logger = require('../logger/logger.js');
 const ProductsCategory = require('../models/productsCategory.js');
 
+const sanitizeHtml = require('sanitize-html');
+
 module.exports.getAllProductsCategories = async ( req, res ) => {
 
   const productsCategories = await ProductsCategory.find({});
@@ -18,7 +20,9 @@ module.exports.addProductsCategory = async ( req, res ) => {
 
     const { name } = req.body;
 
-    const newProductsCategory = new ProductsCategory({ name });
+    const newProductsCategory = new ProductsCategory({ 
+      name: sanitizeHtml( name )
+    });    
 
     await newProductsCategory.save();
 
@@ -60,9 +64,9 @@ module.exports.updateProductsCategory = async ( req, res ) => {
 
     const { id } = req.params;
 
-    const data = req.body;
+    const { name } = req.body;
 
-    await ProductsCategory.updateOne({ _id: id }, data);
+    await ProductsCategory.updateOne({ _id: id }, { name: sanitizeHtml( name ) });
 
     logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ UPDATED PRODUCTS CATEGORY ${ id } ]`)
 
@@ -83,6 +87,8 @@ module.exports.deleteProductsCategories = async ( req, res ) => {
   try {
 
     const { productsCategoriesIDS } = req.body;
+
+    if ( !Array.isArray( productsCategoriesIDS ) ) throw new Error("ERROR");
 
     for ( const productsCategoryID of productsCategoriesIDS ) {
 

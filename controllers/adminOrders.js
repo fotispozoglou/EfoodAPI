@@ -4,7 +4,7 @@ const Tier = require('../models/tier.js');
 
 const jwt = require('jsonwebtoken');
 
-const { ORDER, GENERAL } = require('../config/statusCodes.js');
+const { ORDER, GENERAL, VALID_STATUSES } = require('../config/statusCodes.js');
 
 const logger = require('../logger/logger.js');
 
@@ -17,6 +17,12 @@ module.exports.setOrderStatus = async ( req, res ) => {
   logger.info(`ADMIN ${ username } ( ${ _id } ) [ SET ORDER { ${ id } } STATUS { ${ newStatus } } ]`);
 
   const order = await Order.findById( id );
+
+  if ( !VALID_STATUSES.includes( newStatus ) ) {
+
+    return res.send(JSON.stringify({ status: GENERAL.SUCCESS, statusChanged: false, actualStatus: order.status.number }));
+
+  }
 
   if ( !override && newStatus <= order.status.number && newStatus !== -100 ) {
 

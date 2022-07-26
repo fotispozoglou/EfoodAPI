@@ -5,14 +5,17 @@ const Validate = require('./Validate.js');
 const ValidateModel = require("./ValidateModel.js");
 
 const { GENERAL } = require('../config/statusCodes.js');
+const Ingredient = require('../models/ingredient.js');
 
-const validateFields = async ( ...fields ) => {
+module.exports.validateFields = async ( ...fields ) => {
 
   let areValid = true;
 
   const invalidFields = [];
 
   for ( const field of fields ) {
+
+    console.log(field);
 
     const isValid = field[1].isValid();
 
@@ -40,6 +43,7 @@ module.exports.validateProduct = async ( req, res, next ) => {
 
     const isValidPrice = new Validate( price )
       .required('Price Must Be Defined')
+      .number('Price Must Be A Number')
       .min( 0, 'Price Value Must Be Greater Than Or Equal To 0' );
 
     const isValidAvailable = new Validate( available )
@@ -47,10 +51,12 @@ module.exports.validateProduct = async ( req, res, next ) => {
 
     const isValidQuantity = new Validate( quantity )
       .required('Quntity Must Be Defined')
+      .number('Price Must Be A Number')
       .min( 1, 'Quantity Value Must Be Greater Than Or Equal To 1' );
 
     const isValidMinimumQuantity = new Validate( minQuantity )
       .required('Minimum Quntity Must Be Defined')
+      .number('Price Must Be A Number')
       .min( 1, 'Minimum Quantity Must Be Greater Than Or Equal To 1' );
 
     const isValidCategory = await new ValidateModel( ProductsCategory, category )
@@ -61,7 +67,7 @@ module.exports.validateProduct = async ( req, res, next ) => {
       .validateIDS('Invalid Tiers Selected')
       .IDSExists('Invalid Tiers Selected');
 
-    const areValidFields = await validateFields( 
+    const areValidFields = await this.validateFields( 
       ['name', isValidName ], 
       ['price', isValidPrice ],
       ['available', isValidAvailable],
@@ -99,9 +105,9 @@ module.exports.validateIngredient = async ( req, res, next ) => {
 
   const isValidName = new Validate( name ).required('Name Must Be Defined');
 
-  const isValidPrice = new Validate( price ).min( 0, 'Price Value Must Be Greater Than Or Equal To 0' );
+  const isValidPrice = new Validate( price ).number('Price Must Be A Number').min( 0, 'Price Value Must Be Greater Than Or Equal To 0' );
 
-  const areValidFields = await validateFields( ['name', isValidName], ['price', isValidPrice] );
+  const areValidFields = await this.validateFields( ['name', isValidName], ['price', isValidPrice] );
 
   if ( areValidFields.areValid ) {
 
@@ -147,21 +153,34 @@ module.exports.validateTiers = async ( req, res, next ) => {
 
   const hasValidMaxSelections = new Validate( maxSelections )
     .required('Maximum Selections Must Be Defined')
+    .number('Maximum Selections Must Be A Number')
     .min( 1, 'Maximum Selections Value Must Be Greater Than Or Equal To 1' );
 
   const hasValidMinSelections = new Validate( minSelections )
     .required('Minimum Selections Must Be Defined')
+    .number('Minimum Selections Must Be A Number')
     .max( maxSelections, 'Minimum Selection Must Be Smaller Than Maximum Selections' )
     .min( 0, 'Minimum Selections Must Be Greater Than Or Equal To 0' ); 
 
   const hasValidType = new Validate( type )
     .enum(['radio', 'checkbox'], 'Select A Valid Type');
 
-  const areValidFields = await validateFields( 
+  const hasValidIngredients = await new ValidateModel( Ingredient, ingredients )
+    .validateIDS('Invalid Tiers Selected')
+    .IDSExists('Invalid Ingredients Selected');
+
+  const hasValidSelectedIngredients = await new ValidateModel( Ingredient, selectedIngredients )
+    .validateIDS('Invalid Tiers Selected')
+    .enum( ingredients, 'Default Ingredients Must Be In Ingredients' )
+    .IDSExists('Invalid Default Ingredients Selected');
+
+  const areValidFields = await this.validateFields( 
     ['name', isValidName ], 
     ['maxSelections', hasValidMaxSelections ],
     ['minSelections', hasValidMinSelections ],
-    ['type', hasValidType ]
+    ['type', hasValidType ],
+    ['ingredients', hasValidIngredients],
+    ['selectedIngredients', hasValidSelectedIngredients]
   );
 
   if ( areValidFields.areValid ) {

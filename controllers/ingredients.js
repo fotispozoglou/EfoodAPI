@@ -1,6 +1,7 @@
 const { GENERAL, ITEM } = require('../config/statusCodes.js');
 const logger = require('../logger/logger.js');
 const Ingredient = require('../models/ingredient.js');
+const sanitizeHtml = require('sanitize-html');
 
 module.exports.getAllIngredients = async ( req, res ) => {
 
@@ -18,7 +19,10 @@ module.exports.addIngredient = async ( req, res ) => {
 
     const { name, price } = req.body;
 
-    const newIngredient = new Ingredient({ name, price });
+    const newIngredient = new Ingredient({ 
+      name: sanitizeHtml( name ), 
+      price: sanitizeHtml( price )
+    });
 
     await newIngredient.save();
 
@@ -60,9 +64,12 @@ module.exports.updateIngredient = async ( req, res ) => {
 
     const { id } = req.params;
 
-    const data = req.body;
+    const { name, price } = req.body;
 
-    await Ingredient.updateOne({ _id: id }, data);
+    await Ingredient.updateOne({ _id: id }, {
+      name: sanitizeHtml( name ), 
+      price: sanitizeHtml( price )
+    });
 
     logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ UPDATED INGREDIENT ${ id } ]`);
 
@@ -83,6 +90,8 @@ module.exports.deleteIngredients = async ( req, res ) => {
   try {
 
     const { ingredientsIDS } = req.body;
+
+    if ( !Array.isArray( ingredientsIDS ) ) throw new Error("ERROR");
 
     for ( const ingredientID of ingredientsIDS ) {
 

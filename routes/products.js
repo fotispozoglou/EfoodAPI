@@ -32,8 +32,6 @@ router.route('/available/switch')
 router.route('/available/:id')
   .put( isAdmin, products.updateProductAvailability );
 
-router.get('/search/:query', products.search);
-
 router.route('/:id')
   .put( isAdmin, validateProduct, products.updateProduct);
 

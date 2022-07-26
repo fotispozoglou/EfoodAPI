@@ -41,6 +41,24 @@ class ValidateModel extends Validate {
 
   }
 
+  enum( enums, errorMessage ) {
+
+    let valid = true;
+
+    if ( this._id.length < 1 ) return this;
+
+    for ( const id of this._id ) {
+
+      if ( !enums.includes( id ) ) valid = false;
+
+    }
+
+    this.handleStatement( !valid, errorMessage );
+
+    return this;
+    
+  }
+
   validateID( errorMessage ) {
 
     const hasInvalidID = this.handleStatement( this._id === undefined || this._id === null || this._id.length <= 0, errorMessage );
@@ -73,7 +91,7 @@ class ValidateModel extends Validate {
 
       const exists = await this._model.exists({ _id: id });
 
-      if ( exists === false ) hasInvalidID = true;
+      if ( !exists ) hasInvalidID = true;
 
     }
 
