@@ -15,8 +15,6 @@ module.exports.validateFields = async ( ...fields ) => {
 
   for ( const field of fields ) {
 
-    console.log(field);
-
     const isValid = field[1].isValid();
 
     if ( isValid === false ) {

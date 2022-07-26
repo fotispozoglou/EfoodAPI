@@ -15,7 +15,7 @@ const logger = createLogger({
   ),
   transports: [
     new transports.Console(),
-    new transports.File({ filename: 'api_errors.log' })
+    new transports.File({ filename: './logs/api_errors.log' })
   ]
 });
 

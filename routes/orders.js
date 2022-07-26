@@ -11,7 +11,7 @@ router.route('/')
     authenticateClientServer, 
     checkUserActiveOrder, 
     catchAsync( validateOrder ), 
-    catchAsync(orders.completeOrder)
+    catchAsync( orders.completeOrder )
   );
 
 router.get('/all', isValidUser, catchAsync(orders.getClientOrders));
