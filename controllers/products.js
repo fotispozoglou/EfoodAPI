@@ -73,6 +73,12 @@ module.exports.getProductData = async ( req, res ) => {
 
     const product = populate === 'true' ? await Product.findById( id ).populate('category').populate({ path: 'tiers', populate: 'ingredients' }) : await Product.findById( id );
 
+    if ( !product.available || !product ) {
+
+      return res.status( 200 ).send( JSON.stringify({ status: ITEM.LOADING_ERROR }) );
+
+    }
+
     res.send(JSON.stringify( formatResponseProduct( product ) ));
 
   } catch ( e ) {

@@ -53,17 +53,13 @@ const createOrder = async () => {
 
   console.log(`ORDER DATE: ${ new Date(randomSendAT).getDate() }:${ new Date(randomSendAT).getMonth() + 1 }:${ new Date(randomSendAT).getFullYear() }`);
 
-  randomClient.status.lastUpdated = Date.now();
-
-  randomClient.status.number = ORDER.STATUS_PENDING;
-
   const order = new Order( 
     { 
       client: randomClient, 
       products: finalProducts, 
       totalPrice, 
-      status: randomClient.status,//ORDER.STATUS_COMPLETED,
-      user: "621020d63dcc1a203b5563c3",
+      status: randomClient.status,
+      user: "62e00a7fc2cda4d22b3008e5",
       time: {
         sendAt: randomSendAT
       },
@@ -95,7 +91,7 @@ const deleteMadeOrders = async () => {
 
   for ( const orderID of madeOrders ) {
 
-    await Order.deleteOne({ _id: orderID });
+    // await Order.deleteOne({ _id: orderID });
 
   }
 

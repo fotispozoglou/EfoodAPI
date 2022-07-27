@@ -7,8 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "start": "concurrently --kill-others \"nodemon --delay 3 app.js\"",
-    "startAll": "concurrently --kill-others \"nodemon --delay 3 app.js\" \"nodemon --delay 3 ../EfoodClient/app.js \" \"nodemon --delay 3 ../EfoodAdmin/app.js\""
+    "start": "concurrently --kill-others \"nodemon --delay 3 app.js\""
   },
   "nodemonConfig": {
     "ignore": [
