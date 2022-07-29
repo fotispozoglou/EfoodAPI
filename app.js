@@ -15,11 +15,9 @@ const helmet = require('helmet');
 
 const mongoSanitize = require('express-mongo-sanitize');
 
-const dbUrl = process.env.MONGO_URL;
+const dbUrl = process.env.MONGO_URL || 'mongodb://localhost:27017/efood';
 
 const logger = require('./logger/logger.js');
-
-const jwt = require('jsonwebtoken');
 
 mongoose.connect(dbUrl, {
   useUnifiedTopology: true,
