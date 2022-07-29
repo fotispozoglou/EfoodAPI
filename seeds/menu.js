@@ -8,7 +8,9 @@ const Ingredient = require('../models/ingredient.js');
 
 const mongoose = require('mongoose');
 
-const dbUrl = 'mongodb://localhost:27017/efood-api';
+const dbUrl = process.env.MONGO_URL || 'mongodb://localhost:27017/efood';
+
+console.log( dbUrl );
 
 mongoose.connect(dbUrl, {
   useUnifiedTopology: true
