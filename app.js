@@ -15,7 +15,7 @@ const helmet = require('helmet');
 
 const mongoSanitize = require('express-mongo-sanitize');
 
-const dbUrl = 'mongodb://localhost:27017/efood-api'; // process.env.DB_URL
+const dbUrl = process.env.MONGO_URL;
 
 const logger = require('./logger/logger.js');
 
