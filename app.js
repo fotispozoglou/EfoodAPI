@@ -10,7 +10,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
-const { SERVER_IP, CLIENT_DOMAIN, SERVER_DOMAIN, ADMIN_DOMAIN } = require('./config/config.js');
+const { SERVER_IP, CLIENT_DOMAIN, SERVER_DOMAIN, ADMIN_DOMAIN, IS_PRODUCTION } = require('./config/config.js');
 const helmet = require('helmet');
 
 const mongoSanitize = require('express-mongo-sanitize');
