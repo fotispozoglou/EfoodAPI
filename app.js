@@ -10,7 +10,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
-const { SERVER_IP } = require('./config/config.js');
+const { SERVER_IP, CLIENT_DOMAIN, SERVER_DOMAIN } = require('./config/config.js');
 const helmet = require('helmet');
 
 const mongoSanitize = require('express-mongo-sanitize');
@@ -39,7 +39,7 @@ const analyticsRoutes = require('./routes/analytics.js');
 const { GENERAL } = require('./config/statusCodes.js');
 
 const corsOptions = {
-  origin: [`http://${ SERVER_IP }:8080`, `http://${ SERVER_IP }:8000`, `http://${ SERVER_IP }`],
+  origin: [`${ CLIENT_DOMAIN }`, `${ SERVER_DOMAIN }`, `http://${ SERVER_IP }`],
   optionsSuccessStatus: 200 
 }
 
