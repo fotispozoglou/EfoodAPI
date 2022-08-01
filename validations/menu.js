@@ -7,6 +7,8 @@ const ValidateModel = require("./ValidateModel.js");
 const { GENERAL } = require('../config/statusCodes.js');
 const Ingredient = require('../models/ingredient.js');
 
+const logger = require('../logger/logger.js'); 
+
 module.exports.validateFields = async ( ...fields ) => {
 
   let areValid = true;
@@ -89,7 +91,7 @@ module.exports.validateProduct = async ( req, res, next ) => {
   
   } catch ( e ) {
 
-    console.log(e);
+    logger.error( e );
 
     res.send( JSON.stringify({ status: GENERAL.ERROR }) );
 

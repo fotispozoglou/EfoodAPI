@@ -7,7 +7,9 @@ const Product = require('../models/product.js');
 const { clients, generateOrderProducts } = require('./orderData.js');
 const { ORDER } = require('../config/statusCodes.js');
 
-const dbUrl = 'mongodb://localhost:27017/efood-api';
+const IS_PRODUCTION = process.env.NODE_ENV === "production";
+
+const dbUrl = IS_PRODUCTION ? process.env.MONGO_URL : 'mongodb://localhost:27017/efood';
 
 mongoose.connect(dbUrl, {
   useUnifiedTopology: true

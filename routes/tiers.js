@@ -6,8 +6,6 @@ const { validateTiers } = require('../validations/menu.js');
 
 const { isAdmin } = require('../middlewares/general.js');
 
-const { PERMISSIONS } = require('../config/permissions.js');
-
 router.route('/')
   .delete( isAdmin, tiers.deleteTiers);
 

@@ -92,7 +92,7 @@ module.exports.updateTier = async ( req, res ) => {
 
   } catch ( e ) {
 
-    console.log(e);
+    logger.error( e );
 
     return res.status( 200 ).send( JSON.stringify({ status: ITEM.UPDATING_ERROR }) );
 

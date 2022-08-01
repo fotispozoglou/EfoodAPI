@@ -32,8 +32,6 @@ const authenticateClientServer = ( req, res, next ) => {
 
   }
 
-  console.log( token );
-
   return jwt.verify(token, process.env.TOKEN_SECRET, ( err , data ) => {
 
     if (err) {
@@ -41,8 +39,6 @@ const authenticateClientServer = ( req, res, next ) => {
       if ( err.name === "TokenExpiredError" ) {
 
         logger.warn(`TOKEN EXPIRED - SEND BY ${ req.ip }`);
-
-        console.log(`TOKEN EXPIRED - SEND BY ${ req.ip }`);
 
         return res.send(JSON.stringify({ tokenExpired: true }));
 
@@ -100,7 +96,7 @@ const isAdmin = async ( req, res, next ) => {
 
     if ( !user || user.isAdmin === false ) { 
 
-      logger.warn(`USER NOT ADMIN ( ${ user._id }, ${ user.username }, ${ user.permissions } ) - SEND BY ${ req.ip }`);
+      logger.warn(`USER NOT ADMIN ( ${ user._id }, ${ user.username } ) - SEND BY ${ req.ip }`);
       
       return res.sendStatus( 403 );
 
@@ -111,53 +107,6 @@ const isAdmin = async ( req, res, next ) => {
     return next();
 
   });
-
-};
-
-const authenticatePermissions = ( ...permissions ) => {
-
-  return ( req, res, next ) => {
-
-    const authHeader = req.headers['authorization'];
-
-    const api_token = authHeader && authHeader.split(' ')[1];
-
-    return jwt.verify( api_token, process.env.TOKEN_SECRET, function(err, admin) {
-      
-      if (err) {
-      
-        if ( err.name === "TokenExpiredError" ) {
-
-          console.log(`TOKEN EXPIRED - SEND BY ${ req.ip }`);
-  
-          return res.send(JSON.stringify({ tokenExpired: true }));
-  
-        }
-
-        console.log(`OTHER TOKEN ERROR - SEND BY ${ req.ip }`);
-  
-        return res.sendStatus(403);
-  
-      }
-
-      let isAuthorized = true;
-      let permissionsCount = 0;
-
-      for ( const permission of permissions ) {
-
-        if ( admin.permissions.includes( permission ) ) permissionsCount += 1;
-
-        if ( admin.permissions.includes( permission ) == false ) isAuthorized = false;
-
-      }
-
-      if ( isAuthorized && permissionsCount === permissions.length ) return next();
-
-      return res.sendStatus( 403 );
-
-    });
-
-  };
 
 };
 

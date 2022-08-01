@@ -226,7 +226,7 @@ module.exports.getOrderClientPhone = async ( req, res ) => {
 
     if ( !user || user.isAdmin === false ) { 
 
-      logger.warn(`USER NOT ADMIN ( ${ user._id }, ${ user.username }, ${ user.permissions } ) - SEND BY ${ req.ip }`);
+      logger.warn(`USER NOT ADMIN ( ${ user._id }, ${ user.username } ) - SEND BY ${ req.ip }`);
       
       return res.sendStatus( 403 );
 

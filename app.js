@@ -12,6 +12,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const { SERVER_IP, CLIENT_DOMAIN, SERVER_DOMAIN, ADMIN_DOMAIN, IS_PRODUCTION } = require('./config/config.js');
 const helmet = require('helmet');
+const logger = require('./logger/logger.js');
 
 const mongoSanitize = require('express-mongo-sanitize');
 
@@ -26,7 +27,9 @@ mongoose.connect(dbUrl, {
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
-  console.log("API Database Connected");
+  
+  logger.info("API Database Connected");
+
 });
 
 const productsRoutes = require('./routes/products.js');
@@ -35,7 +38,6 @@ const productsCategoriesRoutes = require('./routes/productsCategories.js');
 const tiersRoutes = require('./routes/tiers.js');
 const ordersRoutes = require('./routes/orders.js');
 const adminOrdersRoutes = require('./routes/adminOrders.js');
-const analyticsRoutes = require('./routes/analytics.js');
 const { GENERAL } = require('./config/statusCodes.js');
 
 const corsOptions = {
@@ -61,7 +63,6 @@ app.use('/products', productsRoutes);
 app.use('/ingredients', ingredientsRoutes);
 app.use('/productsCategories', productsCategoriesRoutes);
 app.use('/tiers', tiersRoutes);
-app.use('/analytics', analyticsRoutes);
 
 app.all('*', ( req, res ) => {
 
@@ -75,14 +76,6 @@ app.use((err, req, res, next) => {
 
   if (!err.message) err.message = 'Server Error';
 
-  // console.log(statusCode);
-
-  // if (err.code !== 'EBADCSRFTOKEN') {
-
-
-
-  // }
-
   logger.info( err.stack );
   
   res.status( statusCode ).send(JSON.stringify({ status: GENERAL.ERROR }));
@@ -91,6 +84,6 @@ app.use((err, req, res, next) => {
 
 app.listen(port, () => {
 
-  console.log("API STARTED");
+  logger.info("API Server Started");
 
 });
