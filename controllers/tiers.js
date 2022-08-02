@@ -28,7 +28,7 @@ module.exports.addTier = async ( req, res ) => {
       type: sanitizeHtml( type )
     });
 
-    await newTier.save();
+    // await newTier.save();
 
     logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ ADDED TIER ${ newTier._id } ]`);
 
@@ -77,14 +77,14 @@ module.exports.updateTier = async ( req, res ) => {
 
     const { name, ingredients, selectedIngredients, maxSelections, minSelections, type } = req.body;
 
-    await Tier.updateOne({ _id: id }, {
-      name: sanitizeHtml( name ), 
-      ingredients, 
-      selectedIngredients, 
-      maxSelections: sanitizeHtml( maxSelections ), 
-      minSelections: sanitizeHtml( minSelections ), 
-      type: sanitizeHtml( type )
-    });
+    // await Tier.updateOne({ _id: id }, {
+    //   name: sanitizeHtml( name ), 
+    //   ingredients, 
+    //   selectedIngredients, 
+    //   maxSelections: sanitizeHtml( maxSelections ), 
+    //   minSelections: sanitizeHtml( minSelections ), 
+    //   type: sanitizeHtml( type )
+    // });
 
     logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ UPDATED TIER ${ id } ]`);
 
@@ -112,7 +112,7 @@ module.exports.deleteTiers = async ( req, res ) => {
 
     for ( const tierID of tiersIDS ) {
 
-      await Tier.deleteOne({ _id: tierID });
+      // await Tier.deleteOne({ _id: tierID });
 
     }
 

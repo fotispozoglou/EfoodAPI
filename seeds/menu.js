@@ -6,21 +6,21 @@ const ProductsCategory = require('../models/productsCategory.js');
 const Tier = require('../models/tier.js');
 const Ingredient = require('../models/ingredient.js');
 
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 
-const IS_PRODUCTION = process.env.NODE_ENV === "production";
+// const IS_PRODUCTION = process.env.NODE_ENV === "production";
 
-const dbUrl = IS_PRODUCTION ? process.env.MONGO_URL : 'mongodb://localhost:27017/efood';
+// const dbUrl = IS_PRODUCTION ? process.env.MONGO_URL : 'mongodb://localhost:27017/efood';
 
-mongoose.connect(dbUrl, {
-  useUnifiedTopology: true
-});
+// mongoose.connect(dbUrl, {
+//   useUnifiedTopology: true
+// });
 
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", () => {
-  console.log("API Database Connected");
-});
+// const db = mongoose.connection;
+// db.on("error", console.error.bind(console, "connection error:"));
+// db.once("open", () => {
+//   console.log("API Database Connected");
+// });
 
 const savedIngredientsIDS = [];
 const savedTiersIDS = [];
@@ -118,7 +118,7 @@ const emptyDatabase = async () => {
 
 };
 
-const init = async () => {
+module.exports.seedMenu = async () => {
 
   await emptyDatabase();
 
@@ -132,4 +132,4 @@ const init = async () => {
 
 };
 
-init().then(() => { mongoose.connection.close(); });
+// init().then(() => { mongoose.connection.close(); });

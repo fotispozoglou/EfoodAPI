@@ -129,7 +129,7 @@ module.exports.validateProductsCategory = async ( req, res, next ) => {
 
   const isValidName = new Validate( name ).required('Name Must Be Defined');
 
-  const areValidFields = await validateFields( ['name', isValidName] );
+  const areValidFields = await this.validateFields( ['name', isValidName] );
 
   if ( areValidFields.areValid ) {
 

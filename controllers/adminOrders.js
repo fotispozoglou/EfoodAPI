@@ -32,13 +32,13 @@ module.exports.setOrderStatus = async ( req, res ) => {
 
   if ( override ) {
 
-    await order.updateStatus( newStatus );
+    // await order.updateStatus( newStatus );
 
     return res.send(JSON.stringify({ status: GENERAL.SUCCESS, statusChanged: true, actualStatus: newStatus }));
 
   }
 
-  await order.updateStatus( newStatus );
+  // await order.updateStatus( newStatus );
 
   res.send(JSON.stringify({ status: GENERAL.SUCCESS, actualStatus: newStatus }));
 

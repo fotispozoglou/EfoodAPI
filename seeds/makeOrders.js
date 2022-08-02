@@ -7,7 +7,9 @@ const Product = require('../models/product.js');
 const { clients, generateOrderProducts } = require('./orderData.js');
 const { ORDER } = require('../config/statusCodes.js');
 
-const dbUrl = 'mongodb://localhost:27017/efood-api';
+const IS_PRODUCTION = process.env.NODE_ENV === "production";
+
+const dbUrl = IS_PRODUCTION ? process.env.MONGO_URL : 'mongodb://localhost:27017/efood';
 
 mongoose.connect(dbUrl, {
   useUnifiedTopology: true
@@ -51,15 +53,13 @@ const createOrder = async () => {
 
   const randomSendAT = new Date().getTime() - Math.floor( Math.random() * SEVEN_DAYS );
 
-  console.log(`ORDER DATE: ${ new Date(randomSendAT).getDate() }:${ new Date(randomSendAT).getMonth() + 1 }:${ new Date(randomSendAT).getFullYear() }`);
-
   const order = new Order( 
     { 
       client: randomClient, 
       products: finalProducts, 
       totalPrice, 
       status: randomClient.status,
-      user: "62e2788e0a3ab51325fee006",
+      user: "",
       time: {
         sendAt: randomSendAT
       },

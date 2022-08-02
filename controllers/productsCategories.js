@@ -24,7 +24,7 @@ module.exports.addProductsCategory = async ( req, res ) => {
       name: sanitizeHtml( name )
     });    
 
-    await newProductsCategory.save();
+    // await newProductsCategory.save();
 
     logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ ADDED PRODUCTS CATEGORY ${ newProductsCategory._id } ]`)
 
@@ -66,7 +66,7 @@ module.exports.updateProductsCategory = async ( req, res ) => {
 
     const { name } = req.body;
 
-    await ProductsCategory.updateOne({ _id: id }, { name: sanitizeHtml( name ) });
+    // await ProductsCategory.updateOne({ _id: id }, { name: sanitizeHtml( name ) });
 
     logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ UPDATED PRODUCTS CATEGORY ${ id } ]`)
 
@@ -92,7 +92,7 @@ module.exports.deleteProductsCategories = async ( req, res ) => {
 
     for ( const productsCategoryID of productsCategoriesIDS ) {
 
-      await ProductsCategory.deleteOne({ _id: productsCategoryID });
+      // await ProductsCategory.deleteOne({ _id: productsCategoryID });
 
     }
 

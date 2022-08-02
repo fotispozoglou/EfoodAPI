@@ -119,12 +119,12 @@ module.exports.completeOrder = async ( req, res ) => {
 
   const newOrder = new Order( formatedOrder );
 
-  await newOrder.save();
+  // await newOrder.save();
 
   const newOrderResponse = await Order.findById( newOrder.id ).select('_id orderID totalPrice products status time')
     .populate({ path: 'products', populate: { path: 'original', select: 'name price' }, select: 'quantity' });
 
-  res.send(JSON.stringify({ status: GENERAL.SUCCESS, orderID: newOrder.id, order: newOrderResponse }));
+  res.send(JSON.stringify({ status: GENERAL.SUCCESS, orderID: newOrder.id, order: newOrder }));
 
 };
 
@@ -171,7 +171,7 @@ module.exports.removeOrder = async ( req, res ) => {
 
   const { orderID } = req.params;
 
-  await Order.deleteOne({ _id: orderID });
+  // await Order.deleteOne({ _id: orderID });
 
   res.send(JSON.stringify({ status: GENERAL.SUCCESS }));
 
@@ -212,7 +212,7 @@ module.exports.removeClientInfo = async ( req, res ) => {
     'client.name': 'deleted'
   };
 
-  await Order.updateMany({ user: userID }, { $set: clearedValues });
+  // await Order.updateMany({ user: userID }, { $set: clearedValues });
 
   res.send(JSON.stringify({ status: GENERAL.SUCCESS }));
 

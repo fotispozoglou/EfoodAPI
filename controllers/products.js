@@ -49,7 +49,7 @@ module.exports.addProduct = async ( req, res ) => {
       tiers: tiers 
     });
 
-    await newProduct.save();  
+    // await newProduct.save();  
 
     logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ ADDED PRODUCT ${ newProduct._id } ]`);
 
@@ -101,20 +101,20 @@ module.exports.updateProduct = async ( req, res ) => {
 
     const { name, price, minQuantity, quantity, description, category, tiers, available } = data;
 
-    await Product.updateOne({ _id: id }, {  
-      name: sanitizeHtml( name ), 
-      price: sanitizeHtml( price ), 
-      description: sanitizeHtml( description ), 
-      category: category, 
-      quantity: sanitizeHtml( quantity ), 
-      minQuantity: sanitizeHtml( minQuantity ), 
-      available: sanitizeHtml( available ),
-      tiers: tiers
-    });
+    // await Product.updateOne({ _id: id }, {  
+    //   name: sanitizeHtml( name ), 
+    //   price: sanitizeHtml( price ), 
+    //   description: sanitizeHtml( description ), 
+    //   category: category, 
+    //   quantity: sanitizeHtml( quantity ), 
+    //   minQuantity: sanitizeHtml( minQuantity ), 
+    //   available: sanitizeHtml( available ),
+    //   tiers: tiers
+    // });
 
     logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ UPDATED PRODUCT ${ id } ]`);
 
-    res.send(JSON.stringify({ status: GENERAL.SUCCESS }));
+    res.send(JSON.stringify({ status: GENERAL.SUCCESS, _id: id, name, available }));
 
   } catch ( e ) {
 
@@ -134,7 +134,7 @@ module.exports.deleteProducts = async ( req, res ) => {
 
     if ( !Array.isArray( productsIDS ) ) throw new Error("ERROR");
 
-    await Product.deleteMany({ _id: { $in: productsIDS } });
+    // await Product.deleteMany({ _id: { $in: productsIDS } });
 
     logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ DELETED ${ productsIDS.length } PRODUCT/S ${ productsIDS.join(',') } ]`);
 
@@ -154,7 +154,7 @@ module.exports.updateProductAvailability = async ( req, res ) => {
 
   const { id, available } = req.body;
 
-  await Product.updateOne({ _id: id }, { $set: { available } });
+  // await Product.updateOne({ _id: id }, { $set: { available } });
 
   logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ SET PRODUCT ${ id } AVAILABILITY: ${ String( available ).toUpperCase()  } ]`);
 
@@ -174,11 +174,11 @@ module.exports.controlSwitchProductsAvailability = async ( req, res ) => {
 
     const product = await Product.findById( productID );
 
-    await product.switchAvailability();
+    // await product.switchAvailability();
 
     products.push({ _id: product._id, available: product.available });
 
-    await product.save();
+    // await product.save();
 
   }
 

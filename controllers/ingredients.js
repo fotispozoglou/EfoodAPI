@@ -24,7 +24,7 @@ module.exports.addIngredient = async ( req, res ) => {
       price: sanitizeHtml( price )
     });
 
-    await newIngredient.save();
+    // await newIngredient.save();
 
     logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ ADDED INGREDIENT ${ newIngredient._id } ]`);
 
@@ -66,10 +66,10 @@ module.exports.updateIngredient = async ( req, res ) => {
 
     const { name, price } = req.body;
 
-    await Ingredient.updateOne({ _id: id }, {
-      name: sanitizeHtml( name ), 
-      price: sanitizeHtml( price )
-    });
+    // await Ingredient.updateOne({ _id: id }, {
+    //   name: sanitizeHtml( name ), 
+    //   price: sanitizeHtml( price )
+    // });
 
     logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ UPDATED INGREDIENT ${ id } ]`);
 
@@ -93,11 +93,11 @@ module.exports.deleteIngredients = async ( req, res ) => {
 
     if ( !Array.isArray( ingredientsIDS ) ) throw new Error("ERROR");
 
-    for ( const ingredientID of ingredientsIDS ) {
+    // for ( const ingredientID of ingredientsIDS ) {
 
-      await Ingredient.deleteOne({ _id: ingredientID });
+    //   await Ingredient.deleteOne({ _id: ingredientID });
 
-    }
+    // }
 
     logger.info(`ADMIN ${ user.username } ( ${ user._id } ) [ DELETED ${ ingredientsIDS.length } INGREDIENT/S ${ ingredientsIDS.join(',') } ]`);
 

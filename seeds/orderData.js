@@ -27,7 +27,7 @@ module.exports.clients = [
     address: "Plisioi", 
     comments: "Plisioi Comments ", 
     floor: "1", 
-    name: "petros",
+    name: "eleni",
     phone: `69${ Math.floor( Math.random() * 89000000 + 10000000 ) }`,
     status: {
       number: ORDER.STATUS_ACCEPTED,
@@ -38,65 +38,10 @@ module.exports.clients = [
     address: "Kleitos", 
     comments: "Kleitos Comments ", 
     floor: "2", 
-    name: "eleni",
-    phone: `69${ Math.floor( Math.random() * 89000000 + 10000000 ) }`,
-    status: {
-      number: ORDER.STATUS_DELIVERING,
-      lastUpdated: Date.now()
-    }
-  },
-  { 
-    address: "Kozani", 
-    comments: "Kozani Comments ", 
-    floor: "2", 
     name: "maria",
     phone: `69${ Math.floor( Math.random() * 89000000 + 10000000 ) }`,
     status: {
       number: ORDER.STATUS_DELIVERING,
-      lastUpdated: Date.now()
-    }
-  },
-  { 
-    address: "Zep", 
-    comments: "Zep Comments ", 
-    floor: "1", 
-    name: "kostantina",
-    phone: `69${ Math.floor( Math.random() * 89000000 + 10000000 ) }`,
-    status: {
-      number: ORDER.STATUS_DELIVERING,
-      lastUpdated: Date.now()
-    }
-  },
-  { 
-    address: "Batero", 
-    comments: "Batero Comments ", 
-    floor: "2", 
-    name: "giorgos",
-    phone: `69${ Math.floor( Math.random() * 89000000 + 10000000 ) }`,
-    status: {
-      number: ORDER.STATUS_PENDING,
-      lastUpdated: Date.now()
-    }
-  },
-  { 
-    address: "koila", 
-    comments: "koila Comments ", 
-    floor: "1", 
-    name: "eirhnh",
-    phone: `69${ Math.floor( Math.random() * 89000000 + 10000000 ) }`,
-    status: {
-      number: ORDER.STATUS_PENDING,
-      lastUpdated: Date.now()
-    }
-  },
-  { 
-    address: "lefkopigi", 
-    comments: "lefkopigi Comments ", 
-    floor: "1", 
-    name: "kostas",
-    phone: `69${ Math.floor( Math.random() * 89000000 + 10000000 ) }`,
-    status: {
-      number: ORDER.STATUS_PENDING,
       lastUpdated: Date.now()
     }
   }
