@@ -22,13 +22,24 @@ const emptyOrders = async () => {
 
 };
 
-const statuses = [102, 102, 102, 102, -100, 99];
+const activeStatuses = [ 99, 100, 101 ];
+
+const completedStatuses = [ -100, 102 ];
 
 const createOrders = async users => {
 
   for ( const user of users ) {
 
-    for ( const status of statuses ) {
+    let hasAddedActiveOrder = false;
+
+    for ( let index = 0; index < 5; index += 1 ) {
+
+      const status = hasAddedActiveOrder ? 
+        completedStatuses[Math.floor( Math.random() * completedStatuses.length ) ]
+        :
+        activeStatuses[Math.floor( Math.random() * activeStatuses.length )];
+
+      if ( !hasAddedActiveOrder ) hasAddedActiveOrder = true;
 
       const randomOne = Math.floor( Math.random() * products.length );
 

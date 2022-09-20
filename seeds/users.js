@@ -24,7 +24,13 @@ const users = [
   { username: "fotis", password: "password" },
   { username: "nikos", password: crypto.randomBytes( 12 ).toString('hex') },
   { username: "eleni", password: crypto.randomBytes( 12 ).toString('hex') },
-  { username: "maria", password: crypto.randomBytes( 12 ).toString('hex') }
+  { username: "maria", password: crypto.randomBytes( 12 ).toString('hex') },
+  { username: "giorgos", password: crypto.randomBytes( 12 ).toString('hex') },
+  { username: "petros", password: crypto.randomBytes( 12 ).toString('hex') },
+  { username: "katerina", password: crypto.randomBytes( 12 ).toString('hex') },
+  { username: "athanasia", password: crypto.randomBytes( 12 ).toString('hex') },
+  { username: "kostas", password: crypto.randomBytes( 12 ).toString('hex') },
+  { username: "alexandra", password: crypto.randomBytes( 12 ).toString('hex') }
 ];
 
 module.exports.getUsersData = async () => {
